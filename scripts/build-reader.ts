@@ -48,7 +48,7 @@ function parseFrontmatter(raw: string): { title: string; body: string } {
 }
 
 function mdxToHtml(mdx: string, bookId: string): string {
-  let text = mdx;
+  let text = mdx.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
   // mermaid / code fences
   text = text.replace(/```[\s\S]*?```/g, (block) => {
     if (block.startsWith("```mermaid")) return "<p class=\"muted\">[схема]</p>";
@@ -103,12 +103,12 @@ function mdxToHtml(mdx: string, bookId: string): string {
   text = text.replace(/^---+$/gm, "<hr />");
 
   // lists
-  text = text.replace(/(^(?:[-*+]|\d+\.)\s+.+(?:\n|$))+?/gm, (block) => {
+  text = text.replace(/(^(?:[-*]|\d+\.)\s+.+(?:\n|$))+?/gm, (block) => {
     const lines = block.trim().split("\n");
     const ordered = /^\d+\./.test(lines[0]);
     const tag = ordered ? "ol" : "ul";
     const items = lines
-      .map((l) => l.replace(/^([-*+]|\d+\.)\s+/, ""))
+      .map((l) => l.replace(/^([-*]|\d+\.)\s+/, ""))
       .map((l) => `<li>${inline(l)}</li>`)
       .join("");
     return `<${tag}>${items}</${tag}>\n`;
@@ -120,7 +120,7 @@ function mdxToHtml(mdx: string, bookId: string): string {
     .map((p) => {
       const t = p.trim();
       if (!t) return "";
-      if (/^<(h[1-6]|ul|ol|pre|blockquote|hr|div|p|table)/.test(t)) return t;
+      if (/^<(h[1-6]|ul|ol|pre|blockquote|hr|div|p|table)\b/.test(t)) return t;
       return `<p>${inline(t.replace(/\n/g, "<br />"))}</p>`;
     })
     .join("\n");
@@ -135,8 +135,9 @@ function inline(s: string): string {
     return `<a href="${esc(href)}">${esc(label)}</a>`;
   });
   t = t.replace(/`([^`]+)`/g, (_m, code) => `<code>${esc(code)}</code>`);
+  // bold before italic; avoid lookbehind so Windows paths stay simple
   t = t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-  t = t.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, "<em>$1</em>");
+  t = t.replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
   return t;
 }
 
