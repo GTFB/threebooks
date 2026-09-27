@@ -73,22 +73,43 @@ function mdxToHtml(mdx: string, bookId: string): string {
     return `<blockquote>${inline(inner)}</blockquote>\n`;
   });
 
-  // tables
+  // tables → stacked definition blocks (readable on phone)
   text = text.replace(/(^\|.+\|[ \t]*\n)+/gm, (block) => {
-    const rows = block.trim().split("\n").filter(Boolean);
-    const htmlRows = rows
-      .filter((r) => !/^\|[\s|:-]+\|$/.test(r))
-      .map((r, i) => {
-        const cells = r
-          .trim()
-          .replace(/^\|/, "")
-          .replace(/\|$/, "")
-          .split("|")
-          .map((c) => c.trim());
-        const tag = i === 0 ? "th" : "td";
-        return `<tr>${cells.map((c) => `<${tag}>${inline(c)}</${tag}>`).join("")}</tr>`;
-      });
-    return `<div class="table-wrap"><table>${htmlRows.join("")}</table></div>\n`;
+    const rows = block
+      .trim()
+      .split("\n")
+      .filter(Boolean)
+      .filter((r) => !/^\|[\s|:-]+\|$/.test(r.trim()));
+    if (rows.length === 0) return "";
+    const parsed = rows.map((r) =>
+      r
+        .trim()
+        .replace(/^\|/, "")
+        .replace(/\|$/, "")
+        .split("|")
+        .map((c) => c.trim()),
+    );
+    const [header, ...body] = parsed;
+    if (body.length === 0) {
+      return `<div class="table-wrap"><table><tr>${header
+        .map((c) => `<th>${inline(c)}</th>`)
+        .join("")}</tr></table></div>\n`;
+    }
+    // two-column layer tables → cards; wider tables stay tabular
+    if (header.length === 2) {
+      const cards = body
+        .map(
+          ([k, v]) =>
+            `<div class="layer"><div class="layer-k">${inline(k)}</div><div class="layer-v">${inline(v)}</div></div>`,
+        )
+        .join("");
+      return `<div class="layers">${cards}</div>\n`;
+    }
+    const head = `<tr>${header.map((c) => `<th>${inline(c)}</th>`).join("")}</tr>`;
+    const rest = body
+      .map((cells) => `<tr>${cells.map((c) => `<td>${inline(c)}</td>`).join("")}</tr>`)
+      .join("");
+    return `<div class="table-wrap"><table>${head}${rest}</table></div>\n`;
   });
 
   // headings
@@ -271,6 +292,22 @@ article pre code{background:none;padding:0}
 table{border-collapse:collapse;width:100%;font-size:.95rem}
 th,td{border:1px solid var(--line);padding:.45rem .55rem;vertical-align:top}
 th{background:#262019;text-align:left}
+.layers{display:grid;gap:.85rem;margin:1.2rem 0 1.6rem}
+.layer{
+  border:1px solid var(--line);
+  border-left:3px solid var(--accent);
+  background:color-mix(in oklab, var(--paper) 92%, var(--accent));
+  padding:.85rem 1rem;
+}
+.layer-k{
+  font-family:"Manrope",sans-serif;
+  font-size:.78rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:.35rem;
+}
+.layer-v{color:var(--ink);font-size:1rem;line-height:1.55}
 .pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.5rem;font-family:"Manrope",sans-serif}
 .pager a{color:var(--accent);text-decoration:none}
 .muted{color:var(--muted)}
