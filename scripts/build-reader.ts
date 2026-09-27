@@ -190,7 +190,13 @@ function layout(opts: {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#14110f" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <title>${esc(opts.title)}</title>
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="icon" href="/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/icon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600;7..72,700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -200,12 +206,36 @@ function layout(opts: {
 <body>
 <header class="top">
   <a class="brand" href="/">Три книги</a>
-  ${opts.crumb ? `<nav class="crumb">${opts.crumb}</nav>` : ""}
+  ${opts.crumb ? `<nav class="crumb">${opts.crumb}</nav>` : `<span class="offline-pill" id="offline-pill" hidden>офлайн</span>`}
 </header>
 <main class="shell">
 ${opts.body}
 </main>
-<footer class="foot">Симулизм → ROOT → COREX</footer>
+<footer class="foot">Симулизм → ROOT → COREX <span id="cache-status"></span></footer>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js").then(function (reg) {
+    if (reg.installing) {
+      var el = document.getElementById("cache-status");
+      if (el) el.textContent = "· качаю книги в кэш…";
+      reg.installing.addEventListener("statechange", function () {
+        if (this.state === "installed" && el) el.textContent = "· доступно офлайн";
+      });
+    } else if (reg.active && document.getElementById("cache-status")) {
+      document.getElementById("cache-status").textContent = "· доступно офлайн";
+    }
+  }).catch(function () {});
+}
+function syncOnline() {
+  var pill = document.getElementById("offline-pill");
+  if (!pill) return;
+  if (navigator.onLine) pill.hidden = true;
+  else pill.hidden = false;
+}
+window.addEventListener("online", syncOnline);
+window.addEventListener("offline", syncOnline);
+syncOnline();
+</script>
 </body>
 </html>`;
 }
@@ -312,6 +342,17 @@ th{background:#262019;text-align:left}
 .pager a{color:var(--accent);text-decoration:none}
 .muted{color:var(--muted)}
 .foot{text-align:center;color:#6e6356;font-size:.8rem;padding:0 1rem 2rem;font-family:"Manrope",sans-serif}
+.offline-pill{
+  font-family:"Manrope",sans-serif;
+  font-size:.72rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:#efe6d8;
+  background:#5a3a28;
+  border:1px solid #8a4b2f;
+  padding:.25rem .55rem;
+}
+#cache-status{color:#7a6e60}
 a{color:var(--accent)}
 @media(min-width:720px){
   .shell{padding-top:2rem}
@@ -336,7 +377,45 @@ function chapterTitle(folder: string, slug: string): string {
 
 function main() {
   ensureDir(publicDir);
+  const cacheUrls: string[] = ["/", "/styles.css", "/icon.svg", "/manifest.webmanifest", "/404.html"];
+  const cacheVersion = `threebooks-${new Date().toISOString().slice(0, 10)}-${Date.now().toString(36)}`;
+
   write(join(publicDir, "styles.css"), css);
+  write(
+    join(publicDir, "icon.svg"),
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Три книги">
+  <rect width="128" height="128" rx="20" fill="#14110f"/>
+  <rect x="22" y="28" width="28" height="72" rx="3" fill="#2f6f5e"/>
+  <rect x="50" y="22" width="28" height="78" rx="3" fill="#8a4b2f"/>
+  <rect x="78" y="32" width="28" height="68" rx="3" fill="#2c4a6e"/>
+</svg>`,
+  );
+  write(
+    join(publicDir, "manifest.webmanifest"),
+    JSON.stringify(
+      {
+        name: "Три книги",
+        short_name: "Три книги",
+        description: "Симулизм, ROOT и COREX — читать онлайн и офлайн",
+        start_url: "/",
+        scope: "/",
+        display: "standalone",
+        background_color: "#14110f",
+        theme_color: "#14110f",
+        lang: "ru",
+        icons: [
+          {
+            src: "/icon.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+            purpose: "any maskable",
+          },
+        ],
+      },
+      null,
+      2,
+    ),
+  );
   write(
     join(publicDir, "404.html"),
     layout({
@@ -365,6 +444,7 @@ function main() {
       body: `<div class="hero">
   <h1>Три книги</h1>
   <p>Симулизм — зачем играть. ROOT — законы поля. COREX — как выигрывать матчи.</p>
+  <p class="muted">Открой сайт один раз онлайн — все главы сохранятся в кэш телефона.</p>
 </div>
 <div class="cards">${homeCards}</div>`,
     }),
@@ -376,6 +456,8 @@ function main() {
     for (const section of manifest.sections) {
       for (const slug of section.chapters) flat.push(slug);
     }
+
+    cacheUrls.push(`/${book.id}/`);
 
     const toc = manifest.sections
       .map((section) => {
@@ -409,6 +491,7 @@ function main() {
         console.warn("missing", path);
         return;
       }
+      cacheUrls.push(`/${book.id}/${slug}/`);
       const raw = readFileSync(path, "utf8");
       const { title, body } = parseFrontmatter(raw);
       const h1 = body.match(/^#\s+(.+)$/m);
@@ -434,7 +517,76 @@ function main() {
     });
   }
 
-  console.log("built", publicDir);
+  const uniqueUrls = [...new Set(cacheUrls)];
+  write(
+    join(publicDir, "sw.js"),
+    `/* generated — do not edit */
+const CACHE = ${JSON.stringify(cacheVersion)};
+const PRECACHE = ${JSON.stringify(uniqueUrls, null, 2)};
+
+self.addEventListener("install", (event) => {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+    for (const url of PRECACHE) {
+      try { await cache.add(url); } catch (e) { console.warn("precache fail", url, e); }
+    }
+    await self.skipWaiting();
+  })());
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener("fetch", (event) => {
+  const req = event.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+
+  if (url.origin === self.location.origin) {
+    event.respondWith((async () => {
+      const cached = await caches.match(req, { ignoreSearch: true });
+      if (cached) return cached;
+      try {
+        const fresh = await fetch(req);
+        if (fresh.ok) {
+          const cache = await caches.open(CACHE);
+          cache.put(req, fresh.clone());
+        }
+        return fresh;
+      } catch {
+        if (req.mode === "navigate") {
+          return (await caches.match("/")) || Response.error();
+        }
+        return Response.error();
+      }
+    })());
+    return;
+  }
+
+  if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
+    event.respondWith((async () => {
+      const cached = await caches.match(req);
+      if (cached) return cached;
+      try {
+        const fresh = await fetch(req);
+        const cache = await caches.open(CACHE);
+        cache.put(req, fresh.clone());
+        return fresh;
+      } catch {
+        return cached || Response.error();
+      }
+    })());
+  }
+});
+`,
+  );
+
+  console.log("built", publicDir, "pages", uniqueUrls.length);
 }
 
 main();

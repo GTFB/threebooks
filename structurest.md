@@ -27,3 +27,4 @@ threebooks/
 - Manifests list section/chapter order.
 - `bun run build` regenerates `public/` for Cloudflare Workers.
 - `bun run deploy` builds and deploys with `CLOUDFLARE_API_TOKEN`.
+- PWA: `public/sw.js` precaches all chapters on first visit; `manifest.webmanifest` + `icon.svg` for install.
