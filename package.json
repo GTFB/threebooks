@@ -1,0 +1,12 @@
+{
+  "name": "threebooks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun run scripts/build-reader.ts",
+    "deploy": "bun run build ; bunx wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.105.0"
+  }
+}

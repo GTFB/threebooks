@@ -1,0 +1,96 @@
+{
+  "metaSlug": "01-corex-access",
+  "title": "COREX. Methodology",
+  "metaDescription": "Table of contents for the COREX methodology.",
+  "annotationHeading": "Annotation",
+  "annotation": "The COREX methodology for working with leaders: setting and five systemic laws, a 5-level vertical scale, the C-O-R-E-X session algorithm, a 20-practice arsenal, the LUMA TWIN / PRP execution layer, and protocols for seven leader roles.\n\nFor consultants, strategists, and principals who need a reproducible session OS — from MENASIS diagnostics to contract lock-in and PRP execution.",
+  "sections": [
+    {
+      "id": "section-meta",
+      "title": "Table of contents",
+      "chapters": [
+        "01-corex-access"
+      ]
+    },
+    {
+      "id": "section-00",
+      "title": "Introduction",
+      "chapters": [
+        "02-evolution-method"
+      ]
+    },
+    {
+      "id": "section-01",
+      "title": "Module 1. Setting and laws",
+      "chapters": [
+        "03-setting-laws"
+      ]
+    },
+    {
+      "id": "section-02",
+      "title": "Module 2. Vertical",
+      "chapters": [
+        "04-vertical-levels",
+        "05-vertical-matrix"
+      ]
+    },
+    {
+      "id": "section-03",
+      "title": "Module 3. Diagnostics",
+      "chapters": [
+        "06-diagnostics-menasis"
+      ]
+    },
+    {
+      "id": "section-04",
+      "title": "Module 4. COREX horizontal",
+      "chapters": [
+        "07-horizontal-corex"
+      ]
+    },
+    {
+      "id": "section-05",
+      "title": "Module 5. Arsenal",
+      "chapters": [
+        "08-arsenal-tools"
+      ]
+    },
+    {
+      "id": "section-06",
+      "title": "Module 6. LUMA TWIN and PRP",
+      "chapters": [
+        "09-luma-twin",
+        "10-prp-human-erp",
+        "11-prp-entities"
+      ]
+    },
+    {
+      "id": "section-07",
+      "title": "Module 7. Seven role protocols",
+      "chapters": [
+        "12-leader-roles-intro",
+        "13-protocol-self",
+        "14-protocol-husband",
+        "15-protocol-father",
+        "16-protocol-partner",
+        "17-protocol-client",
+        "18-protocol-manager",
+        "19-protocol-friend"
+      ]
+    },
+    {
+      "id": "section-08",
+      "title": "Module 8. Workshop",
+      "chapters": [
+        "20-praktikum"
+      ]
+    },
+    {
+      "id": "section-09",
+      "title": "Appendix. Character sheet",
+      "chapters": [
+        "21-game-character-sheet"
+      ]
+    }
+  ]
+}

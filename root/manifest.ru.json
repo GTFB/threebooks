@@ -1,0 +1,92 @@
+{
+  "metaSlug": "01-root-access",
+  "title": "ROOT. Дорога к себе",
+  "metaDescription": "ROOT — законы поля, которые нельзя переиграть силой воли.",
+  "annotationHeading": "Аннотация",
+  "annotation": "Ты уже знаешь, что жизнь устроена как игра, и понимаешь, зачем в неё играть. ROOT — про то, что в этой игре нельзя нарушить.\n\nУ поля есть законы. Они не про мораль и не про справедливость: они просто работают. Ребёнок не может быть сильнее родителя. Внимание тратится там, куда ты смотришь. Прерванное движение не исчезает — оно ждёт. Долг возвращается, даже если о нём забыли. Пока закон не увиден, любая техника поверх него — способ проиграть быстрее.\n\nВторая тема книги — поражение. Нас учат побеждать и не учат проигрывать, поэтому проигрыш превращается в стыд, стыд в маску, а маска в сценарий на двадцать лет. Здесь поражение возвращено на своё место: как обратная связь поля и как единственный материал, из которого пересобирают себя.\n\n52 главы разбиты на четыре акта: законы поля, баги и чувства, работа оператора, закон починки. В каждой — механизм, живая история и цена.\n\nЕсли внутри упорно твердит, что время пришло, — это не случайно.",
+  "sections": [
+    {
+      "id": "section-act-01",
+      "title": "АКТ I. Завязка: кто я и где мой код",
+      "chapters": [
+        "01-root-access",
+        "02-how-to-read",
+        "03-network",
+        "04-attention-as-energy",
+        "05-observer-mode",
+        "06-system-definition",
+        "07-three-network-protocols",
+        "08-basic-nodes-mother-father",
+        "09-access-policy-types"
+      ]
+    },
+    {
+      "id": "section-act-02",
+      "title": "АКТ II. Нарастание: чувства и баги",
+      "chapters": [
+        "10-primary-signals",
+        "11-secondary-processes",
+        "12-inherited-data",
+        "13-os-background-states",
+        "14-bug-nature",
+        "15-secondary-benefits-firewall",
+        "16-boundaries-safekeeping-defense-isolation",
+        "17-bug-01-extra-element",
+        "18-bug-02-missing-element",
+        "19-bug-03-inversion",
+        "21-bug-04-substitution",
+        "20-bug-05-broken-link",
+        "22-bug-06-identification",
+        "23-bug-07-triangulation",
+        "24-bug-08-interrupted-movement",
+        "25-bug-09-exchange-disbalance"
+      ]
+    },
+    {
+      "id": "section-act-03",
+      "title": "АКТ III. Кризис: чужой код и цена",
+      "chapters": [
+        "26-foreign-background-process",
+        "27-open-port-principle",
+        "28-process-symbiosis",
+        "29-eco-removal",
+        "30-sensors-as-3d-map",
+        "31-sensory-empathy",
+        "32-node-link-distance",
+        "33-operator-toolkit-markers",
+        "34-operator-safety-hygiene",
+        "35-irreversible-commit"
+      ]
+    },
+    {
+      "id": "section-act-04",
+      "title": "АКТ IV. Разрешение: перепрошивка и новая жизнь",
+      "chapters": [
+        "36-diagnosis",
+        "37-process-in-task-manager",
+        "38-separate-from-process",
+        "39-universal-patch-engineering",
+        "40-overwrite-patch-commit",
+        "41-somatic-success-markers",
+        "42-resource-loading",
+        "43-render-removal",
+        "44-resources-in-network",
+        "45-debts-and-survival-strategies",
+        "46-goal-living-rhythm",
+        "47-connections-in-network",
+        "48-body-interface"
+      ]
+    },
+    {
+      "id": "section-10",
+      "title": "Приложение. Истоки и параллели",
+      "chapters": [
+        "49-node-assembly-in-network",
+        "50-atlas",
+        "51-empty-memory-fills-with-junk",
+        "52-epilog",
+        "53-bug-map"
+      ]
+    }
+  ]
+}

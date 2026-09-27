@@ -1,0 +1,96 @@
+{
+  "metaSlug": "01-corex-access",
+  "title": "COREX. Методология",
+  "metaDescription": "COREX — playbook: как выигрывать конкретные матчи. Третья книга трилогии.",
+  "annotationHeading": "Аннотация",
+  "annotation": "Ты знаешь, зачем играешь, и знаешь законы поля. Осталось выигрывать матчи.\n\nCOREX — playbook. Не мировоззрение и не свод законов: набор ходов, которые делают в конкретной позиции, против конкретного соперника, с конкретной ставкой. Разговор с женой, совет директоров, партнёр, который тянет вниз, собственный понедельник — всё это матчи, и у каждого есть условие победы, цена фола и момент, когда пора уходить со стола.\n\nВнутри: пять уровней масштабирования, разведка позиции, алгоритм хода C-O-R-E-X, арсенал приёмов, окно отката 72 часа и семь ролей лидера, каждая со своим протоколом. Заканчивается всё листом персонажа: сезон, счёт, переигровка.\n\nЗаконы поля здесь не пересказываются — на них дана ссылка в **ROOT**. Ответ на вопрос «зачем» — в **СИМУЛИЗМЕ**. Порядок чтения: Симулизм → ROOT → COREX.",
+  "sections": [
+    {
+      "id": "section-meta",
+      "title": "Оглавление",
+      "chapters": [
+        "01-corex-access"
+      ]
+    },
+    {
+      "id": "section-00",
+      "title": "Введение",
+      "chapters": [
+        "02-evolution-method"
+      ]
+    },
+    {
+      "id": "section-01",
+      "title": "Модуль 1. Сеттинг и законы",
+      "chapters": [
+        "03-setting-laws"
+      ]
+    },
+    {
+      "id": "section-02",
+      "title": "Модуль 2. Вертикаль",
+      "chapters": [
+        "04-vertical-levels",
+        "05-vertical-matrix"
+      ]
+    },
+    {
+      "id": "section-03",
+      "title": "Модуль 3. Диагностика",
+      "chapters": [
+        "06-diagnostics-menasis"
+      ]
+    },
+    {
+      "id": "section-04",
+      "title": "Модуль 4. Горизонталь COREX",
+      "chapters": [
+        "07-horizontal-corex"
+      ]
+    },
+    {
+      "id": "section-05",
+      "title": "Модуль 5. Арсенал",
+      "chapters": [
+        "08-arsenal-tools"
+      ]
+    },
+    {
+      "id": "section-06",
+      "title": "Модуль 6. LUMA TWIN и PRP",
+      "chapters": [
+        "09-luma-twin",
+        "10-prp-human-erp",
+        "11-prp-entities"
+      ]
+    },
+    {
+      "id": "section-07",
+      "title": "Модуль 7. Протоколы 7 ролей",
+      "chapters": [
+        "12-leader-roles-intro",
+        "13-protocol-self",
+        "14-protocol-husband",
+        "15-protocol-father",
+        "16-protocol-partner",
+        "17-protocol-client",
+        "18-protocol-manager",
+        "19-protocol-friend"
+      ]
+    },
+    {
+      "id": "section-08",
+      "title": "Модуль 8. Практикум",
+      "chapters": [
+        "20-praktikum"
+      ]
+    },
+    {
+      "id": "section-09",
+      "title": "Приложение. Лист персонажа",
+      "chapters": [
+        "21-game-character-sheet"
+      ]
+    }
+  ]
+}

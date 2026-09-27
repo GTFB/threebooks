@@ -1,0 +1,91 @@
+{
+  "metaSlug": "01-root-access",
+  "title": "ROOT. Road to Yourself",
+  "metaDescription": "Table of contents for «ROOT. Road to Yourself».",
+  "annotationHeading": "Annotation",
+  "annotation": "A systematic guide to the ROOT technology: the Network as personality architecture, system protocols and Core design, navigating feeling signals, typical bugs, working with foreign processes, operator skills, reprogramming mechanics, and applied chapters on money, relationships, and psychosomatics. Start with «Road to Yourself» or «How to Read This Book» — they set the context and explain chapter structure.\n\nWho should open this terminal? Those stuck in \"Access Denied\" mode when launching key projects; those whose processor is overheated by background anxiety and old resentments; and those who have realized they are executing someone else's life code. This is a book for the engineers of their own lives, ready to regain full super-administrator rights.",
+  "sections": [
+    {
+      "id": "section-act-01",
+      "title": "ACT I. Setup: who am I and where is my code",
+      "chapters": [
+        "01-root-access",
+        "02-how-to-read",
+        "03-network",
+        "04-attention-as-energy",
+        "05-observer-mode",
+        "06-system-definition",
+        "07-three-network-protocols",
+        "08-basic-nodes-mother-father",
+        "09-access-policy-types"
+      ]
+    },
+    {
+      "id": "section-act-02",
+      "title": "ACT II. Rising action: feelings and bugs",
+      "chapters": [
+        "10-primary-signals",
+        "11-secondary-processes",
+        "12-inherited-data",
+        "13-os-background-states",
+        "14-bug-nature",
+        "15-secondary-benefits-firewall",
+        "16-boundaries-safekeeping-defense-isolation",
+        "17-bug-01-extra-element",
+        "18-bug-02-missing-element",
+        "19-bug-03-inversion",
+        "20-bug-05-broken-link",
+        "21-bug-04-substitution",
+        "22-bug-06-identification",
+        "23-bug-07-triangulation",
+        "24-bug-08-interrupted-movement",
+        "25-bug-09-exchange-disbalance"
+      ]
+    },
+    {
+      "id": "section-act-03",
+      "title": "ACT III. Crisis: foreign code and its price",
+      "chapters": [
+        "26-foreign-background-process",
+        "27-open-port-principle",
+        "28-process-symbiosis",
+        "29-eco-removal",
+        "30-sensors-as-3d-map",
+        "31-sensory-empathy",
+        "32-node-link-distance",
+        "33-operator-toolkit-markers",
+        "34-operator-safety-hygiene",
+        "35-irreversible-commit"
+      ]
+    },
+    {
+      "id": "section-act-04",
+      "title": "ACT IV. Resolution: reprogramming and a new life",
+      "chapters": [
+        "36-diagnosis",
+        "37-process-in-task-manager",
+        "38-separate-from-process",
+        "39-universal-patch-engineering",
+        "40-overwrite-patch-commit",
+        "41-somatic-success-markers",
+        "42-resource-loading",
+        "43-render-removal",
+        "44-resources-in-network",
+        "45-debts-and-survival-strategies",
+        "46-goal-living-rhythm",
+        "47-connections-in-network",
+        "48-body-interface"
+      ]
+    },
+    {
+      "id": "section-10",
+      "title": "Appendix. Origins and parallels",
+      "chapters": [
+        "49-node-assembly-in-network",
+        "50-atlas",
+        "51-empty-memory-fills-with-junk",
+        "52-epilog"
+      ]
+    }
+  ]
+}

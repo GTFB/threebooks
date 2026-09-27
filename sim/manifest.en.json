@@ -1,0 +1,93 @@
+{
+  "metaSlug": "0",
+  "title": "Simulizm",
+  "metaDescription": "Table of contents for «Simulizm» — D.A.S.H.A. Protocol worldview map.",
+  "annotationHeading": "Аннотация",
+  "annotation": "Your consciousness is running on someone else's code. The task manager is empty, but your Bio-Terminal is at 80% capacity — you are heating up the ambient air and draining your power into a botnet of other people's goals. Sound familiar?\n\n\"Simulizm\" is not another esoteric theory of the universe or a collection of abstract psychological advice. It is a complete worldview paradigm that clearly shows how a human is structured (our cognitive Hardware and Software), how the world is structured (the global Runtime environment), and the strict system protocols governing the interaction between human and world. And it is all translated into the crystal-clear language of IT, DevOps, and cognitive cybersecurity, with no demands to \"just believe.\"\n\nThe core concept is simple:\nYou are not your mind or your thoughts. Your mind is a Local OS with its own bugs and pre-installed software. You are the Operator, temporarily logged into this hardware. The physical world is a Runtime environment, operating under strict system protocols, not human morality.\n\nThis book is a complete guide to debugging your life:\n• Overclock the Hardware: Detect CPU throttling, eliminate interrupt conflicts, and optimize your Quality of Service (QoS).\n• Clean the System: Locate and remove cognitive Malware, configure your attention Firewall, and block social DDoS attacks.\n• Rewrite the Rules: Acquire Write-Access privileges to reprogram the background rendering of your reality.\n• Setup Multiplayer: Terminate legacy family smart-contracts (the Unlink protocol in your subnets) and establish a decentralized cluster of autonomous Operators.\n\nStop being an NPC executing pre-installed scripts. It's time to log in as an Administrator, comprehend the laws of interaction with the environment, and push the final commit to your own version of reality.\n\nOpen the terminal. Run the diagnostics. Claim your Root access.",
+  "sections": [
+    {
+      "id": "section-0",
+      "title": "Пролог",
+      "chapters": [
+        "0"
+      ]
+    },
+    {
+      "id": "section-i",
+      "title": "Раздел I. Архитектура",
+      "chapters": [
+        "01",
+        "02",
+        "03",
+        "04"
+      ]
+    },
+    {
+      "id": "section-ii",
+      "title": "Раздел II. Кибербезопасность",
+      "chapters": [
+        "05",
+        "06",
+        "07",
+        "08"
+      ]
+    },
+    {
+      "id": "section-iii",
+      "title": "Раздел III. Правила",
+      "chapters": [
+        "09",
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "id": "section-iv",
+      "title": "Раздел IV. Программирование",
+      "chapters": [
+        "13",
+        "14",
+        "15",
+        "16"
+      ]
+    },
+    {
+      "id": "section-v",
+      "title": "Раздел V. Мультиплеер",
+      "chapters": [
+        "17",
+        "18",
+        "19",
+        "20",
+        "25"
+      ]
+    },
+    {
+      "id": "section-vi",
+      "title": "Раздел VI. Эндгейм",
+      "chapters": [
+        "21",
+        "22",
+        "23",
+        "24"
+      ]
+    },
+    {
+      "id": "section-epilog",
+      "title": "Эпилог",
+      "chapters": [
+        "epilog"
+      ]
+    },
+    {
+      "id": "section-appendix",
+      "title": "Приложения",
+      "chapters": [
+        "axioms",
+        "verification-protocol",
+        "appendix-hypotheses"
+      ]
+    }
+  ]
+}
