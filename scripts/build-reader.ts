@@ -123,9 +123,9 @@ function mdxToHtml(mdx: string, bookId: string): string {
   // hr
   text = text.replace(/^---+$/gm, "<hr />");
 
-  // lists
-  text = text.replace(/(^(?:[-*]|\d+\.)\s+.+(?:\n|$))+?/gm, (block) => {
-    const lines = block.trim().split("\n");
+  // lists — greedy so consecutive items stay in one <ol>/<ul>
+  text = text.replace(/(^(?:[-*]|\d+\.)\s+.+(?:\n|$))+/gm, (block) => {
+    const lines = block.trim().split("\n").filter(Boolean);
     const ordered = /^\d+\./.test(lines[0]);
     const tag = ordered ? "ol" : "ul";
     const items = lines
@@ -137,14 +137,31 @@ function mdxToHtml(mdx: string, bookId: string): string {
 
   // paragraphs
   const parts = text.split(/\n{2,}/);
-  const html = parts
+  let html = parts
     .map((p) => {
       const t = p.trim();
       if (!t) return "";
       if (/^<(h[1-6]|ul|ol|pre|blockquote|hr|div|p|table)\b/.test(t)) return t;
+      // text + list in one block (no blank line before list)
+      if (/<(ul|ol)\b/.test(t)) {
+        return t
+          .split(/(<(?:ul|ol)>[\s\S]*?<\/(?:ul|ol)>)/)
+          .map((part) => {
+            if (/^<(ul|ol)>/.test(part)) return part;
+            const s = part.replace(/^(?:<br\s*\/?>|\s)+|(?:<br\s*\/?>|\s)+$/g, "").trim();
+            if (!s) return "";
+            return `<p>${inline(s.replace(/\n/g, "<br />"))}</p>`;
+          })
+          .filter(Boolean)
+          .join("\n");
+      }
       return `<p>${inline(t.replace(/\n/g, "<br />"))}</p>`;
     })
     .join("\n");
+
+  // blank lines between items used to split lists — glue neighbors back
+  html = html.replace(/<\/ol>\s*<ol>/g, "");
+  html = html.replace(/<\/ul>\s*<ul>/g, "");
 
   return rewriteLinks(html, bookId);
 }
@@ -307,8 +324,10 @@ article h1{font-size:clamp(1.6rem,4.5vw,2.2rem);line-height:1.2;margin:0 0 1.2re
 article h2{margin:2rem 0 .8rem;font-size:1.35rem}
 article h3{margin:1.5rem 0 .6rem;font-size:1.15rem}
 article p{margin:0 0 1rem}
-article ul,article ol{margin:0 0 1rem;padding-left:1.2rem}
-article li{margin:.25rem 0}
+article ul,article ol{margin:0 0 1rem;padding-left:1.4rem}
+article ol{list-style:decimal;padding-left:1.6rem}
+article li{margin:.35rem 0}
+article ol li::marker{font-family:"Manrope",sans-serif;color:var(--muted)}
 article blockquote{
   margin:1.2rem 0;padding:.2rem 0 .2rem 1rem;
   border-left:3px solid var(--accent);color:#d8cbb8;font-style:italic;
