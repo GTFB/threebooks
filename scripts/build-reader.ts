@@ -51,7 +51,10 @@ function mdxToHtml(mdx: string, bookId: string): string {
   let text = mdx.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
   // mermaid / code fences
   text = text.replace(/```[\s\S]*?```/g, (block) => {
-    if (block.startsWith("```mermaid")) return "<p class=\"muted\">[схема]</p>";
+    if (block.startsWith("```mermaid")) {
+      const inner = block.replace(/^```mermaid\s*\n?/, "").replace(/```$/, "");
+      return `<div class="diagram"><pre class="mermaid">${esc(inner.trim())}</pre></div>`;
+    }
     const inner = block.replace(/^```\w*\n?/, "").replace(/```$/, "");
     return `<pre><code>${esc(inner.trim())}</code></pre>`;
   });
@@ -202,6 +205,38 @@ function layout(opts: {
   accent: string;
   crumb?: string;
 }): string {
+  const hasMermaid = opts.body.includes('class="mermaid"');
+  const mermaidBoot = hasMermaid
+    ? `
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: "dark",
+  securityLevel: "loose",
+  fontFamily: "Manrope, system-ui, sans-serif",
+  themeVariables: {
+    darkMode: true,
+    background: "#1c1814",
+    primaryColor: "#2a241e",
+    primaryTextColor: "#efe6d8",
+    primaryBorderColor: "#5a4a3a",
+    secondaryColor: "#241f1a",
+    tertiaryColor: "#14110f",
+    lineColor: "#a89a88",
+    textColor: "#efe6d8",
+    mainBkg: "#2a241e",
+    nodeBorder: "#5a4a3a",
+    clusterBkg: "#1c1814",
+    clusterBorder: "#3a322a",
+    titleColor: "#efe6d8",
+    edgeLabelBackground: "#1c1814",
+    nodeTextColor: "#efe6d8"
+  }
+});
+</script>`
+    : "";
+
   return `<!doctype html>
 <html lang="ru">
 <head>
@@ -253,6 +288,7 @@ window.addEventListener("online", syncOnline);
 window.addEventListener("offline", syncOnline);
 syncOnline();
 </script>
+${mermaidBoot}
 </body>
 </html>`;
 }
@@ -336,6 +372,25 @@ article hr{border:0;border-top:1px solid var(--line);margin:2rem 0}
 article code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;background:#2a241e;padding:.1em .35em;border-radius:3px}
 article pre{background:#2a241e;padding:1rem;overflow:auto;border-radius:4px;border:1px solid var(--line)}
 article pre code{background:none;padding:0}
+.diagram{
+  margin:1.4rem 0;
+  padding:.8rem;
+  overflow:auto;
+  border:1px solid var(--line);
+  background:linear-gradient(180deg,#1c1814,#161310);
+  border-radius:4px;
+}
+.diagram .mermaid{
+  margin:0;
+  background:transparent;
+  border:0;
+  padding:.4rem 0;
+  text-align:center;
+  color:var(--ink);
+  font-family:"Manrope",system-ui,sans-serif;
+  overflow:visible;
+}
+.diagram .mermaid svg{max-width:100%;height:auto}
 .callout{margin:1rem 0 .3rem;font-family:"Manrope",sans-serif;letter-spacing:.04em;text-transform:uppercase;font-size:.78rem;color:var(--accent)}
 .table-wrap{overflow:auto;margin:1rem 0}
 table{border-collapse:collapse;width:100%;font-size:.95rem}
@@ -587,7 +642,11 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com") {
+  if (
+    url.hostname === "fonts.googleapis.com" ||
+    url.hostname === "fonts.gstatic.com" ||
+    url.hostname === "cdn.jsdelivr.net"
+  ) {
     event.respondWith((async () => {
       const cached = await caches.match(req);
       if (cached) return cached;
