@@ -623,6 +623,29 @@ self.addEventListener("fetch", (event) => {
 
   if (url.origin === self.location.origin) {
     event.respondWith((async () => {
+      const isPage =
+        req.mode === "navigate" ||
+        (req.headers.get("accept") || "").includes("text/html") ||
+        url.pathname.endsWith("/") ||
+        url.pathname.endsWith(".html");
+
+      // HTML: network first so deploys show up; cache keeps offline fallback
+      if (isPage) {
+        try {
+          const fresh = await fetch(req);
+          if (fresh.ok) {
+            const cache = await caches.open(CACHE);
+            cache.put(req, fresh.clone());
+          }
+          return fresh;
+        } catch {
+          const cached = await caches.match(req, { ignoreSearch: true });
+          if (cached) return cached;
+          return (await caches.match("/")) || Response.error();
+        }
+      }
+
+      // CSS/JS/icons: cache first
       const cached = await caches.match(req, { ignoreSearch: true });
       if (cached) return cached;
       try {
@@ -633,9 +656,6 @@ self.addEventListener("fetch", (event) => {
         }
         return fresh;
       } catch {
-        if (req.mode === "navigate") {
-          return (await caches.match("/")) || Response.error();
-        }
         return Response.error();
       }
     })());
