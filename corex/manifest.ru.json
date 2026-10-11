@@ -1,95 +1,76 @@
 {
-  "metaSlug": "01-corex-access",
+  "metaSlug": "00-intro",
   "title": "COREX. Методология",
-  "metaDescription": "COREX — playbook: как выигрывать конкретные матчи. Третья книга трилогии.",
+  "metaDescription": "COREX — боевой playbook C-Level лидера на фундаментальной онтологии Круга.",
   "annotationHeading": "Аннотация",
-  "annotation": "Ты знаешь, зачем играешь, и знаешь законы поля. Осталось выигрывать матчи.\n\nCOREX — playbook. Не мировоззрение и не свод законов: набор ходов, которые делают в конкретной позиции, против конкретного соперника, с конкретной ставкой. Разговор со спутником жизни, совет директоров, партнёр, который тянет вниз, собственный понедельник — всё это матчи, и у каждого есть условие победы, цена фола и момент, когда пора уходить со стола.\n\nВнутри: пять уровней масштабирования, разведка позиции, алгоритм хода C-O-R-E-X, арсенал приёмов, окно отката 72 часа и семь ролей лидера, каждая со своим протоколом. Заканчивается всё листом персонажа: сезон, счёт, переигровка.\n\nЗаконы поля здесь не пересказываются — на них дана ссылка в **ROOT**. Ответ на вопрос «зачем» — в **СИМУЛИЗМЕ**. Порядок чтения: Симулизм → ROOT → COREX.",
+  "annotation": "Ты знаешь, зачем играешь («СИМУЛИЗМ»), и знаешь законы поля («ROOT»). Осталось научиться выигрывать матчи в реальном мире.\n\nВ основе книги — фундаментальная онтология «КРУГ»: двенадцать сфер способностей, четыре масштаба реальности (Человек, Пара, Дело, Команда), геометрия баланса (течения, качели, перекрёстки) и точный каталог поломок узлов и связей.\n\nCOREX усиливает эту карту боевым исполнительным движком: вертикалью зрелости (L1–L5), тактическим протоколом C-O-R-E-X (60 минут от паралича к действию), соматическим контролем за 90 секунд, ИИ-симулятором связей LUMA TWIN, телеметрией ресурсов PRP (Human-ERP) и книгой протоколов семи суверенных ролей лидера.\n\nПорядок чтения трилогии: Симулизм → ROOT → COREX.",
   "sections": [
     {
-      "id": "section-meta",
-      "title": "Оглавление",
-      "chapters": [
-        "01-corex-access"
-      ]
-    },
-    {
       "id": "section-00",
-      "title": "Введение",
+      "title": "Введение. Архитектура реальности и матча",
       "chapters": [
-        "02-evolution-method"
+        "00-intro"
       ]
     },
     {
       "id": "section-01",
-      "title": "Модуль 1. Сеттинг и законы",
+      "title": "Часть I. Человек (Единица / Личное)",
       "chapters": [
-        "03-setting-laws"
+        "01-person-spheres",
+        "02-person-profile",
+        "03-person-dynamics",
+        "04-person-energy",
+        "05-person-breakdowns",
+        "06-person-diagnostics",
+        "07-person-repair",
+        "08-person-rhythm"
       ]
     },
     {
       "id": "section-02",
-      "title": "Модуль 2. Вертикаль",
+      "title": "Часть II. Пара (Отношения / Личное)",
       "chapters": [
-        "04-vertical-levels",
-        "05-vertical-matrix"
+        "09-pair-balance",
+        "10-pair-exchange",
+        "11-pair-breakdowns",
+        "12-pair-diagnostics",
+        "13-pair-repair",
+        "14-pair-rhythm"
       ]
     },
     {
       "id": "section-03",
-      "title": "Модуль 3. Диагностика",
+      "title": "Часть III. Дело (Единица / Социальное)",
       "chapters": [
-        "06-diagnostics-menasis"
+        "15-business-functions",
+        "16-business-profile",
+        "17-business-dynamics",
+        "18-business-energy",
+        "19-business-breakdowns",
+        "20-business-diagnostics",
+        "21-business-repair",
+        "22-business-rhythm"
       ]
     },
     {
       "id": "section-04",
-      "title": "Модуль 4. Горизонталь COREX",
+      "title": "Часть IV. Команда (Отношения / Социальное)",
       "chapters": [
-        "07-horizontal-corex"
+        "23-team-network",
+        "24-team-coverage",
+        "25-team-breakdowns",
+        "26-team-diagnostics",
+        "27-team-repair",
+        "28-team-rhythm"
       ]
     },
     {
       "id": "section-05",
-      "title": "Модуль 5. Арсенал",
+      "title": "Часть V. Практикум и Приложения",
       "chapters": [
-        "08-arsenal-tools"
-      ]
-    },
-    {
-      "id": "section-06",
-      "title": "Модуль 6. LUMA TWIN и PRP",
-      "chapters": [
-        "09-luma-twin",
-        "10-prp-human-erp",
-        "11-prp-entities"
-      ]
-    },
-    {
-      "id": "section-07",
-      "title": "Модуль 7. Протоколы 7 ролей",
-      "chapters": [
-        "12-leader-roles-intro",
-        "13-protocol-self",
-        "14-protocol-spouse",
-        "15-protocol-parent",
-        "16-protocol-partner",
-        "17-protocol-client",
-        "18-protocol-manager",
-        "19-protocol-friend"
-      ]
-    },
-    {
-      "id": "section-08",
-      "title": "Модуль 8. Практикум",
-      "chapters": [
-        "20-praktikum"
-      ]
-    },
-    {
-      "id": "section-09",
-      "title": "Приложение. Лист персонажа",
-      "chapters": [
-        "21-game-character-sheet"
+        "29-appendix-calculations",
+        "30-appendix-audit",
+        "31-game-character-sheet"
       ]
     }
   ]

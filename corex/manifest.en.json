@@ -1,95 +1,76 @@
 {
-  "metaSlug": "01-corex-access",
+  "metaSlug": "00-intro",
   "title": "COREX. Methodology",
-  "metaDescription": "Table of contents for the COREX methodology.",
+  "metaDescription": "COREX — C-Level executive combat playbook built on the fundamental ontology of The Circle.",
   "annotationHeading": "Annotation",
-  "annotation": "The COREX methodology for working with leaders: setting and five systemic laws, a 5-level vertical scale, the C-O-R-E-X session algorithm, a 20-practice arsenal, the LUMA TWIN / PRP execution layer, and protocols for seven leader roles.\n\nFor consultants, strategists, and principals who need a reproducible session OS — from MENASIS diagnostics to contract lock-in and PRP execution.",
+  "annotation": "You know why you play (SIMULISM), and you know the laws of the field (ROOT). Now learn how to win matches in the physical world.\n\nAt the core lies the fundamental ontology of THE CIRCLE: 12 ability spheres, 4 reality scales (Person, Pair, Business, Team), geometry of balance (flows, see-saws, crossroads), and an exhaustive catalog of node and link breakdowns.\n\nCOREX amplifies this blueprint with an executive combat engine: the L1–L5 maturity vertical, the tactical C-O-R-E-X session protocol (60 minutes from paralysis to action), 90-second somatic vagal stabilization, the LUMA TWIN relationship AI simulator, PRP (Human-ERP) telemetry, and operating protocols for the 7 sovereign leader roles.\n\nReading order: Simulism → ROOT → COREX.",
   "sections": [
     {
-      "id": "section-meta",
-      "title": "Table of contents",
-      "chapters": [
-        "01-corex-access"
-      ]
-    },
-    {
       "id": "section-00",
-      "title": "Introduction",
+      "title": "Introduction. Architecture of Reality and the Match",
       "chapters": [
-        "02-evolution-method"
+        "00-intro"
       ]
     },
     {
       "id": "section-01",
-      "title": "Module 1. Setting and laws",
+      "title": "Part I. Person (Individual / Personal)",
       "chapters": [
-        "03-setting-laws"
+        "01-person-spheres",
+        "02-person-profile",
+        "03-person-dynamics",
+        "04-person-energy",
+        "05-person-breakdowns",
+        "06-person-diagnostics",
+        "07-person-repair",
+        "08-person-rhythm"
       ]
     },
     {
       "id": "section-02",
-      "title": "Module 2. Vertical",
+      "title": "Part II. Pair (Relational / Personal)",
       "chapters": [
-        "04-vertical-levels",
-        "05-vertical-matrix"
+        "09-pair-balance",
+        "10-pair-exchange",
+        "11-pair-breakdowns",
+        "12-pair-diagnostics",
+        "13-pair-repair",
+        "14-pair-rhythm"
       ]
     },
     {
       "id": "section-03",
-      "title": "Module 3. Diagnostics",
+      "title": "Part III. Business (Individual / Social)",
       "chapters": [
-        "06-diagnostics-menasis"
+        "15-business-functions",
+        "16-business-profile",
+        "17-business-dynamics",
+        "18-business-energy",
+        "19-business-breakdowns",
+        "20-business-diagnostics",
+        "21-business-repair",
+        "22-business-rhythm"
       ]
     },
     {
       "id": "section-04",
-      "title": "Module 4. COREX horizontal",
+      "title": "Part IV. Team (Relational / Social)",
       "chapters": [
-        "07-horizontal-corex"
+        "23-team-network",
+        "24-team-coverage",
+        "25-team-breakdowns",
+        "26-team-diagnostics",
+        "27-team-repair",
+        "28-team-rhythm"
       ]
     },
     {
       "id": "section-05",
-      "title": "Module 5. Arsenal",
+      "title": "Part V. Workbook and Appendices",
       "chapters": [
-        "08-arsenal-tools"
-      ]
-    },
-    {
-      "id": "section-06",
-      "title": "Module 6. LUMA TWIN and PRP",
-      "chapters": [
-        "09-luma-twin",
-        "10-prp-human-erp",
-        "11-prp-entities"
-      ]
-    },
-    {
-      "id": "section-07",
-      "title": "Module 7. Seven role protocols",
-      "chapters": [
-        "12-leader-roles-intro",
-        "13-protocol-self",
-        "14-protocol-spouse",
-        "15-protocol-parent",
-        "16-protocol-partner",
-        "17-protocol-client",
-        "18-protocol-manager",
-        "19-protocol-friend"
-      ]
-    },
-    {
-      "id": "section-08",
-      "title": "Module 8. Workshop",
-      "chapters": [
-        "20-praktikum"
-      ]
-    },
-    {
-      "id": "section-09",
-      "title": "Appendix. Character sheet",
-      "chapters": [
-        "21-game-character-sheet"
+        "29-appendix-calculations",
+        "30-appendix-audit",
+        "31-game-character-sheet"
       ]
     }
   ]
