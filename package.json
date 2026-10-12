@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "bun run scripts/build-reader.ts",
+    "build:md": "bun run scripts/build-single-md.ts",
     "deploy": "bun run build ; bunx wrangler deploy"
   },
   "devDependencies": {
