@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>COREX: системное управление жизнью и бизнесом</title>
+<style>
+:root {
+  --ink: #1f2a30;
+  --cream: #f5f3ee;
+  --accent: #e9a35a;
+  --muted: #6b7280;
+  --card: #ffffff;
+  --line: #d6d1c7;
+  --teal: #3d6b78;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #111; color: var(--ink);
+  font-family: Inter, "Segoe UI", Arial, sans-serif; height: 100%; overflow: hidden; }
+main { position: fixed; inset: 0; }
+.deck-slide { position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+  background: #111; }
+.deck-slide.active { display: flex; }
+.slide { width: 1920px; height: 1080px; position: relative; overflow: hidden;
+  transform-origin: center center; }
+.pad { padding: 96px 112px 120px; height: 100%; display: flex; flex-direction: column; gap: 28px; }
+.pad-tight { padding: 72px 96px 96px; gap: 20px; }
+h2 { margin: 0; font-size: 56px; line-height: 1.1; font-weight: 700; color: var(--ink); }
+h3 { margin: 0 0 12px; font-size: 28px; line-height: 1.2; }
+p { margin: 0; font-size: 24px; line-height: 1.45; }
+.hint { color: var(--muted); font-size: 22px; margin-top: -8px; }
+.footer-note { margin-top: auto; font-size: 22px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; }
+.accent-line { color: var(--ink); font-weight: 600; border-top-color: var(--accent); }
+.eyebrow { color: var(--accent); font-size: 28px; font-weight: 700; letter-spacing: 0.04em; margin: 0; }
+.title-slide { justify-content: center; color: #fff; }
+.title-slide .hero { font-size: 140px; margin: 12px 0; letter-spacing: 0.06em; color: #fff; }
+.title-slide .lead { font-size: 42px; color: #e8e4dc; }
+.title-slide .sub { font-size: 28px; color: var(--accent); }
+.two-col, .three-col { display: grid; gap: 28px; }
+.two-col { grid-template-columns: 1fr 1fr; }
+.three-col { grid-template-columns: 1fr 1fr 1fr; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 28px 32px; }
+.card-accent { border-color: var(--accent); box-shadow: inset 0 0 0 2px rgba(233,163,90,0.25); }
+.muted { color: var(--muted); }
+.sys-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
+.sys-svg { width: 100%; max-height: 520px; }
+.cx-hit { cursor: pointer; transition: opacity 0.15s, filter 0.15s, transform 0.15s; }
+.cx-hit:hover { filter: brightness(1.08); }
+.cx-hit:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+.map-grid {
+  display: grid;
+  grid-template-columns: 160px repeat(4, 1fr);
+  grid-template-rows: auto repeat(4, 1fr);
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+.map-corner { }
+.map-col-h { background: var(--ink); color: #fff; border-radius: 12px; padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+.map-col-h strong { font-size: 22px; }
+.map-col-h span { font-size: 16px; color: #c9d0d4; }
+.map-floor-label { background: #e8e2d8; border-radius: 12px; display: flex; align-items: center;
+  justify-content: center; font-weight: 700; font-size: 22px; text-align: center; padding: 8px; }
+.map-cell {
+  border: 2px solid var(--line); border-radius: 14px; background: #fff;
+  font-size: 26px; font-weight: 700; color: var(--ink); cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+.map-cell:hover { border-color: var(--accent); background: #fff8f0; transform: translateY(-2px); }
+.route-table, .agenda { width: 100%; border-collapse: collapse; font-size: 22px; }
+.route-table th, .agenda th { text-align: left; background: var(--ink); color: #fff; padding: 14px 16px; }
+.route-table td, .agenda td { padding: 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.route-table .ep-name { font-weight: 700; color: var(--accent); white-space: nowrap; }
+.swing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; flex: 1; }
+.swing-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 20px;
+  display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+.swing-pair { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-weight: 700; font-size: 22px; }
+.swing-pair i { color: var(--accent); font-style: normal; }
+.swing-label { color: var(--muted); font-size: 18px; }
+.steps-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.steps-row.five { grid-template-columns: repeat(5, 1fr); }
+.step-card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+.step-card .n { color: var(--accent); font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+.step-card h3 { font-size: 24px; }
+.step-card p { font-size: 20px; color: var(--muted); }
+.break-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; flex: 1; }
+.break-cell {
+  border: 2px solid var(--line); border-radius: 14px; background: #fff;
+  font-size: 24px; font-weight: 700; cursor: pointer; padding: 20px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.break-cell:hover { border-color: var(--teal); background: #f0f6f8; }
+.break-link:hover { border-color: var(--accent); background: #fff8f0; }
+.banner { background: #fff; border-left: 6px solid var(--accent); padding: 18px 24px; border-radius: 8px; font-size: 24px; }
+.big-ol { margin: 0; padding-left: 48px; font-size: 28px; line-height: 1.7; }
+.big-ol li { margin-bottom: 12px; }
+.ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.lead-inline { font-size: 28px; }
+.pager { position: fixed; right: 20px; bottom: 16px; z-index: 50; color: #bbb; font-size: 14px;
+  font-family: Inter, Arial, sans-serif; pointer-events: none; }
+
+/* popup */
+.cx-popup {
+  position: fixed; inset: 0; z-index: 100; display: none;
+  align-items: center; justify-content: center; background: rgba(15,20,24,0.55);
+}
+.cx-popup.open { display: flex; }
+.cx-popup-card {
+  width: min(760px, 92vw); max-height: min(80vh, 820px); overflow: auto;
+  background: #fff; color: var(--ink); border-radius: 18px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.35); padding: 36px 40px 32px; position: relative;
+}
+.cx-popup-card h3 { font-size: 34px; margin-bottom: 8px; }
+.cx-popup-card .q { font-size: 24px; font-weight: 600; margin: 12px 0 20px; }
+.cx-popup-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.cx-popup-meta div { background: #f5f3ee; border-radius: 10px; padding: 12px 14px; font-size: 18px; }
+.cx-popup-meta strong { display: block; font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 4px; }
+.cx-popup-card p { font-size: 20px; margin: 8px 0; }
+.cx-close {
+  position: absolute; top: 14px; right: 16px; border: 0; background: transparent;
+  font-size: 28px; cursor: pointer; color: var(--muted); line-height: 1; padding: 4px 10px;
+}
+.cx-close:hover { color: var(--ink); }
+@media print {
+  html, body { overflow: visible; background: #fff; height: auto; }
+  main { position: static; }
+  .deck-slide { position: relative; display: flex !important; page-break-after: always; height: auto; }
+  .slide { transform: none !important; width: 1920px; height: 1080px; }
+  .cx-popup, .pager { display: none !important; }
+}
+</style>
+</head>
+<body>
+<main id="deck">
+
+<section class="deck-slide" id="1" data-label="COREX" aria-label="Слайд 1">
+  <div class="slide" style="background:var(--ink)">
+    
+<div class="pad title-slide">
+  <p class="eyebrow">СТРАТЕГИЧЕСКАЯ СЕССИЯ · 90 МИНУТ</p>
+  <h1 class="hero">COREX</h1>
+  <p class="lead">Карта: где течёт в жизни и в деле</p>
+  <p class="sub">Одна схема для человека, семьи и компании</p>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="2" data-label="Зачем мы здесь" aria-label="Слайд 2">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad">
+  <h2>Зачем мы здесь</h2>
+  <div class="two-col">
+    <div class="card">
+      <h3>Как обычно чинят</h3>
+      <p>Устал: витамины или отпуск. Ссоры: «поговорить». Дело встало: трекер и мотивация.</p>
+      <p class="muted">Каждая проблема отдельно — причина остаётся.</p>
+    </div>
+    <div class="card card-accent">
+      <h3>Подход COREX</h3>
+      <p>Одна и та же схема: человек, семья и дело. Ёмкости, трубы, давление, фильтры, сигналы.</p>
+      <p>Видим, где течёт и какой вентиль повернуть первым.</p>
+    </div>
+  </div>
+  <p class="footer-note">Трещина в фундаменте: красить фасад бесполезно. Засор в трубе: мощный насос только порвёт соединение.</p>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="3" data-label="Пять элементов" aria-label="Слайд 3">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad pad-tight">
+  <h2>Любая система — из пяти частей</h2>
+  <p class="hint">Нажми на часть схемы</p>
+  <div class="sys-wrap">
+    <svg class="sys-svg" viewBox="0 0 900 520" role="img" aria-label="Пять элементов системы">
+      <defs>
+        <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L8,3 L0,6 Z" fill="var(--accent)"/>
+        </marker>
+      </defs>
+
+      <g class="cx-hit" data-cx="elem" data-id="boundary" tabindex="0" role="button" aria-label="Граница">
+        <ellipse cx="380" cy="260" rx="210" ry="170" fill="rgba(233,163,90,0.06)"
+                 stroke="var(--accent)" stroke-width="6" stroke-dasharray="14 10"/>
+        <text x="380" y="78" text-anchor="middle" fill="var(--accent)" font-size="22" font-weight="700">Граница</text>
+      </g>
+
+      <g class="cx-hit" data-cx="elem" data-id="stock" tabindex="0" role="button" aria-label="Запас">
+        <rect x="300" y="180" width="160" height="160" rx="12" fill="#dfe8ec" stroke="var(--ink)" stroke-width="3"/>
+        <rect x="312" y="250" width="136" height="78" rx="6" fill="#7eb8c9" opacity="0.85"/>
+        <text x="380" y="215" text-anchor="middle" fill="var(--ink)" font-size="20" font-weight="700">Запас</text>
+      </g>
+
+      <g class="cx-hit" data-cx="elem" data-id="node" tabindex="0" role="button" aria-label="Узел">
+        <circle cx="380" cy="260" r="42" fill="var(--ink)" stroke="var(--accent)" stroke-width="4"/>
+        <text x="380" y="266" text-anchor="middle" fill="#fff" font-size="18" font-weight="700">Узел</text>
+      </g>
+
+      <g class="cx-hit" data-cx="elem" data-id="flow" tabindex="0" role="button" aria-label="Поток">
+        <path d="M120 260 H270" stroke="var(--accent)" stroke-width="8" fill="none" marker-end="url(#arr)"/>
+        <path d="M490 260 H640" stroke="var(--accent)" stroke-width="8" fill="none" marker-end="url(#arr)"/>
+        <rect x="140" y="430" width="480" height="40" rx="8" fill="transparent"/>
+        <text x="195" y="240" text-anchor="middle" fill="var(--ink)" font-size="16" font-weight="600">приток</text>
+        <text x="565" y="240" text-anchor="middle" fill="var(--ink)" font-size="16" font-weight="600">отток</text>
+        <text x="380" y="455" text-anchor="middle" fill="var(--accent)" font-size="20" font-weight="700">Поток</text>
+      </g>
+
+      <g class="cx-hit" data-cx="elem" data-id="link" tabindex="0" role="button" aria-label="Связь">
+        <circle cx="760" cy="260" r="36" fill="#5a6b73" stroke="var(--ink)" stroke-width="3"/>
+        <text x="760" y="266" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Узел</text>
+        <path d="M590 260 H720" stroke="#5a6b73" stroke-width="6" fill="none" stroke-dasharray="8 6"/>
+        <text x="655" y="290" text-anchor="middle" fill="var(--ink)" font-size="16" font-weight="700">Связь</text>
+      </g>
+    </svg>
+  </div>
+  <p class="footer-note">Уровень запаса = приток − отток. Пока на дне дыра — кран не открываем: сначала закрываем слив.</p>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="4" data-label="Маршрут роста" aria-label="Слайд 4">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad pad-tight">
+  <h2>Маршрут: человек и стартап</h2>
+  <p class="hint">Рост идёт от огня к форме. Четыре эпохи — один путь для жизни и дела.</p>
+  <table class="route-table">
+    <thead>
+      <tr><th>Эпоха</th><th>Человек</th><th>Стартап</th><th>Кризис на пороге</th></tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class="ep-name">Искра</td>
+      <td>хочу · образ · тыл · союз</td>
+      <td>идея · имя · подушка · кофаундеры</td>
+      <td class="muted">не обрести форму</td>
+    </tr>
+    <tr>
+      <td class="ep-name">Форма</td>
+      <td>учусь · считаю · ритм · результат</td>
+      <td>рынок · касса · процесс · MVP</td>
+      <td class="muted">кустарщина, слияние с основателем</td>
+    </tr>
+    <tr>
+      <td class="ep-name">Рост</td>
+      <td>стая · «нет» · масштаб · запас</td>
+      <td>рынок · договоры · выручка · runway</td>
+      <td class="muted">долина смерти</td>
+    </tr>
+    <tr>
+      <td class="ep-name">Отдача</td>
+      <td>очистка · вклад · зачем · взгляд</td>
+      <td>долг · сервис · миссия · совет</td>
+      <td class="muted">застой и бюрократия</td>
+    </tr></tbody>
+  </table>
+  <p class="footer-note accent-line">Рост — от огня к форме. Авария чинится снизу вверх: сон и касса раньше смысла.</p>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="5" data-label="Карта жизни" aria-label="Слайд 5">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad pad-tight">
+  <h2>Карта жизни: четыре этажа × четыре шага</h2>
+  <p class="hint">Нажми на клетку — откроется вопрос, качель и перекрёсток ресурса</p>
+  <div class="map-grid">
+    <div class="map-corner"></div>
+    <div class="map-col-h"><strong>Что берём</strong><span>вход ресурса</span></div><div class="map-col-h"><strong>Как делаем</strong><span>процесс</span></div><div class="map-col-h"><strong>Что отдаём</strong><span>результат наружу</span></div><div class="map-col-h"><strong>Что чиним</strong><span>обратная связь</span></div>
+    <div class="map-floor-label">Основа</div><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="uchet">Учёт</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="tyl">Тыл</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="masshtab">Масштаб</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="zapas">Запас прочности</button><div class="map-floor-label">Мастерство</div><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="znaniya">Знания</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="poryadok">Порядок</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="produkt">Продукт</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="ochistka">Очистка</button><div class="map-floor-label">Контакт</div><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="obraz">Образ</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="soyuz">Союз</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="sreda">Среда</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="shlyuz">Шлюз</button><div class="map-floor-label">Курс</div><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="strast">Страсть</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="vklad">Вклад</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="smysl">Смысл</button><button type="button" class="map-cell cx-hit" data-cx="sphere" data-id="nablyudatel">Наблюдатель</button>
+  </div>
+  <p class="footer-note">Если на этаже одна клетка пустая — весь этаж врёт. Одна карта для человека, семьи и компании.</p>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="6" data-label="Три правила" aria-label="Слайд 6">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad">
+  <h2>Три правила чтения карты</h2>
+  <div class="three-col">
+    <div class="card">
+      <h3>Слабое звено</h3>
+      <p>Этаж держится на самой слабой клетке. Нет подушки — рост в долг обрушит всё.</p>
+    </div>
+    <div class="card">
+      <h3>Качели</h3>
+      <p>Противоположные клетки связаны. Если одна раздута, а вторая пустая — сначала снять перекос.</p>
+    </div>
+    <div class="card">
+      <h3>Что чиним</h3>
+      <p>Запас прочности, очистка, шлюз и наблюдатель — как система учится. Без них ошибки повторяются.</p>
+    </div>
+  </div>
+  <p class="footer-note">Чиним с другого конца пары. Нет порядка? Спроси: видят ли люди пользу от своей работы?</p>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="7" data-label="Качели" aria-label="Слайд 7">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad pad-tight">
+  <h2>Качели: восемь осей равновесия</h2>
+  <p class="hint">Пара клеток на одной оси. Перекос лечится с другого конца.</p>
+  <div class="swing-grid">
+    <div class="swing-card">
+      <div class="swing-pair"><span>Учёт</span><i>↔</i><span>Образ</span></div>
+      <div class="swing-label">Факт и картинка</div>
+    </div>
+    <div class="swing-card">
+      <div class="swing-pair"><span>Тыл</span><i>↔</i><span>Союз</span></div>
+      <div class="swing-label">Опора и партнёрство</div>
+    </div>
+    <div class="swing-card">
+      <div class="swing-pair"><span>Масштаб</span><i>↔</i><span>Среда</span></div>
+      <div class="swing-label">Рост и стая</div>
+    </div>
+    <div class="swing-card">
+      <div class="swing-pair"><span>Запас прочности</span><i>↔</i><span>Шлюз</span></div>
+      <div class="swing-label">Защита и вход</div>
+    </div>
+    <div class="swing-card">
+      <div class="swing-pair"><span>Знания</span><i>↔</i><span>Страсть</span></div>
+      <div class="swing-label">Расчёт и огонь</div>
+    </div>
+    <div class="swing-card">
+      <div class="swing-pair"><span>Порядок</span><i>↔</i><span>Вклад</span></div>
+      <div class="swing-label">Ритм и отдача</div>
+    </div>
+    <div class="swing-card">
+      <div class="swing-pair"><span>Продукт</span><i>↔</i><span>Смысл</span></div>
+      <div class="swing-label">Сделанное и зачем</div>
+    </div>
+    <div class="swing-card">
+      <div class="swing-pair"><span>Очистка</span><i>↔</i><span>Наблюдатель</span></div>
+      <div class="swing-label">Выбросить и увидеть</div>
+    </div></div>
+  <p class="footer-note">Пример: дорогой образ снаружи при слепых цифрах внутри. Касса дырявая — ночью паника.</p>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="8" data-label="Почему ломаются" aria-label="Слайд 8">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad">
+  <h2>Почему системы ломаются</h2>
+  <div class="three-col">
+    <div class="card">
+      <h3>Задержка обратной связи</h3>
+      <p>Урезали рекламу весной — продажи упали осенью. Не видя связи, жмём дальше.</p>
+    </div>
+    <div class="card">
+      <h3>Показатель стал целью</h3>
+      <p>Платят за объём — делают объём, качество погибает.</p>
+    </div>
+    <div class="card">
+      <h3>Истощение запаса</h3>
+      <p>Прибыль есть, но съедены здоровье, люди и запас. Баланс красивый — система пустая.</p>
+    </div>
+  </div>
+  <p class="footer-note">Аварии не «злой рок»: это одна из трёх механик, и её можно найти.</p>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="9" data-label="Ремонт снизу вверх" aria-label="Слайд 9">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad">
+  <h2>Аварию чиним строго снизу вверх</h2>
+  <div class="steps-row">
+    <div class="step-card"><div class="n">1</div><h3>Основа</h3><p>Сначала сон и касса: факты, остановить течь, выспаться</p></div>
+    <div class="step-card"><div class="n">2</div><h3>Мастерство</h3><p>Потом цех: порядок, результат, выбросить мёртвое</p></div>
+    <div class="step-card"><div class="n">3</div><h3>Контакт</h3><p>Потом люди: правда, передоговориться, усилить границы</p></div>
+    <div class="step-card"><div class="n">4</div><h3>Курс</h3><p>Только потом смысл и стратегия</p></div>
+  </div>
+  <p class="footer-note">Пока течёт касса и нет сна — не ищем «предназначение» и не едем на ретрит.</p>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="10" data-label="Поломки во мне" aria-label="Слайд 10">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad pad-tight">
+  <h2>Поломка во мне</h2>
+  <p class="hint">Повторяется с разными людьми — чиним себя. Нажми имя: что видно у человека и в деле. Паттерн не привязан к одной клетке карты.</p>
+  <div class="break-grid"><button type="button" class="break-cell cx-hit" data-cx="break" data-id="golod" data-kind="node">Голод</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="yad" data-kind="node">Яд</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="peregruz" data-kind="node">Перегрузка</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="ballast" data-kind="node">Балласт</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="sleposta" data-kind="node">Слепота</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="fasad" data-kind="node">Фасад</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="lozhnaya" data-kind="node">Ложная цель</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="model" data-kind="node">Устаревшая модель</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="pustota" data-kind="node">Пустота</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="tochka" data-kind="node">Единая точка отказа</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="dyra" data-kind="node">Дыра в границе</button><button type="button" class="break-cell cx-hit" data-cx="break" data-id="chuzhaya" data-kind="node">Чужая ноша</button></div>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="11" data-label="Поломки между нами" aria-label="Слайд 11">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad pad-tight">
+  <h2>Поломка между нами</h2>
+  <p class="hint">Ломается только с одним человеком — чиним связь. Паттерн универсален: любая пара, любой канал.</p>
+  <div class="break-grid"><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="razryv" data-kind="link">Разрыв</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="iskazhenie" data-kind="link">Искажение</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="mimo" data-kind="link">Мимо адресата</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="yazyki" data-kind="link">Разные языки</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="disbalans" data-kind="link">Дисбаланс обмена</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="klinch" data-kind="link">Клинч</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="raskachka" data-kind="link">Раскачка</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="sabotazh" data-kind="link">Саботаж</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="sliyanie" data-kind="link">Слияние</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="treugolnik" data-kind="link">Треугольник</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="razmytaya" data-kind="link">Размытая зона</button><button type="button" class="break-cell break-link cx-hit" data-cx="break" data-id="tabu" data-kind="link">Табу</button></div>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="12" data-label="Когда рвануло" aria-label="Слайд 12">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad">
+  <h2>Когда рвануло: сначала тело, потом пять шагов</h2>
+  <p class="banner">Сначала три минуты: угрозы жизни нет. Два вдоха носом, долгий выдох. Холод на лицо. Потом — пять шагов.</p>
+  <div class="steps-row five">
+    <div class="step-card"><div class="n">1</div><h3>Факт</h3><p>Что произошло — как с камеры, без домыслов</p></div>
+    <div class="step-card"><div class="n">2</div><h3>Моя доля</h3><p>Где я участвовал в поломке</p></div>
+    <div class="step-card"><div class="n">3</div><h3>Прожить</h3><p>Не спорить с фактом, дать телу отреагировать</p></div>
+    <div class="step-card"><div class="n">4</div><h3>Один ход</h3><p>Один конкретный ход, не десять планов</p></div>
+    <div class="step-card"><div class="n">5</div><h3>Сделать</h3><p>За час, сутки или трое суток</p></div>
+  </div>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="13" data-label="Принять и действовать" aria-label="Слайд 13">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad">
+  <h2>Принять и действовать</h2>
+  <p class="lead-inline">Когда выбило из колеи — не бросаться сразу в решение и не застревать в чувствах.</p>
+  <div class="three-col">
+    <div class="card"><h3>Сразу решать</h3><p>Чувства остаются и мешают думать.</p></div>
+    <div class="card"><h3>Только переживать</h3><p>Ситуация не меняется.</p></div>
+    <div class="card card-accent"><h3>Метод</h3><p>Сначала прожить, потом один ход. Не вместо чувств — после них.</p></div>
+  </div>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="14" data-label="Пять шагов" aria-label="Слайд 14">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad">
+  <h2>Пять шагов</h2>
+  <ol class="big-ol">
+    <li><strong>Факт.</strong> Назвать, что случилось, и согласиться с фактом.</li>
+    <li><strong>Моя доля.</strong> Где я участвовал в поломке — без охоты на виноватых.</li>
+    <li><strong>Прожить.</strong> Назвать чувство точным словом, дать телу отреагировать.</li>
+    <li><strong>Один ход.</strong> Не десять планов.</li>
+    <li><strong>Сделать.</strong> В ближайший час, сутки или трое суток.</li>
+  </ol>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="15" data-label="Где поставить машину" aria-label="Слайд 15">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad">
+  <h2>Где поставить машину: сфера, связь или замер</h2>
+  <p class="hint">Не судья сверху — усилитель внутри системы</p>
+  <div class="ai-grid">
+    <div class="card">
+      <h3>Снять рутину со сферы</h3>
+      <p>Черновик учёта, регламента, письма. Человек решает — машина готовит.</p>
+    </div>
+    <div class="card">
+      <h3>Автоматизировать связь</h3>
+      <p>Резюме разговора, «кому писать», перевод между языками сторон.</p>
+    </div>
+    <div class="card">
+      <h3>Дать прогресс</h3>
+      <p>Замер до и после одного хода. Напоминание: сделать за трое суток.</p>
+    </div>
+    <div class="card">
+      <h3>Стресс-тест</h3>
+      <p>Один из инструментов: пять сценариев потери и дыры в защите — не главная роль.</p>
+    </div>
+  </div>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="16" data-label="Сессия 90 минут" aria-label="Слайд 16">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad pad-tight">
+  <h2>Как пройдёт сессия: 90 минут</h2>
+  <table class="agenda">
+    <thead><tr><th>Время</th><th>Что делаем</th><th>Результат</th></tr></thead>
+    <tbody>
+      <tr><td>0:00–0:15</td><td>Пять частей и маршрут роста</td><td>Общий язык</td></tr>
+      <tr><td>0:15–0:35</td><td>Карта: клик по клеткам, своя оценка</td><td>Где течёт</td></tr>
+      <tr><td>0:35–0:55</td><td>Поломки во мне и между нами</td><td>1–2 главные поломки</td></tr>
+      <tr><td>0:55–1:15</td><td>Пять шагов на живом кейсе</td><td>Демонтаж проблемы</td></tr>
+      <tr><td>1:15–1:25</td><td>Где поставить машину</td><td>Сфера / связь / замер</td></tr>
+      <tr><td>1:25–1:30</td><td>Финал</td><td>Один ход на трое суток</td></tr>
+    </tbody>
+  </table>
+</div>
+
+  </div>
+</section>
+<section class="deck-slide" id="17" data-label="Один ход" aria-label="Слайд 17">
+  <div class="slide" style="background:var(--cream)">
+    
+<div class="pad">
+  <h2>Выход из зала: один ход</h2>
+  <div class="steps-row">
+    <div class="step-card"><div class="n">1 ч</div><h3>Сейчас</h3><p>Одно действие: письмо, перевод, закрыть доступ</p></div>
+    <div class="step-card"><div class="n">24 ч</div><h3>Сутки</h3><p>Поменять правило или процесс</p></div>
+    <div class="step-card"><div class="n">72 ч</div><h3>Трое суток</h3><p>Зафиксировать результат в цифрах</p></div>
+  </div>
+  <p class="footer-note accent-line">До конца сессии выбираем ОДИН ход и называем срок вслух.</p>
+</div>
+
+  </div>
+</section>
+</main>
+<div class="pager" id="pager"></div>
+<div class="cx-popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+  <div class="cx-popup-card" id="popup-card">
+    <button type="button" class="cx-close" id="popup-close" aria-label="Закрыть">×</button>
+    <div id="popup-body"></div>
+  </div>
+</div>
+<script>
+window.COREX_DATA = {"elements": {"node": {"title": "Узел", "life": "Кто это: ты, отдел, партнёр, подрядчик. Тот, кто выбирает и действует."}, "stock": {"title": "Запас", "life": "Что копится: деньги, сон, доверие, товар. То, чем узел пользуется."}, "flow": {"title": "Поток", "life": "Что приходит и что уходит. Приток и отток запаса."}, "boundary": {"title": "Граница", "life": "Что пускаем внутрь: договор, личное «нет», фильтр."}, "link": {"title": "Связь", "life": "Как связаны узлы: разговор, регламент, договорённость."}}, "spheres": {"uchet": {"id": "uchet", "name": "Учёт", "floor": 0, "col": 0, "q": "Знаю ли я цифры: сон, деньги, что пришло и что ушло?", "human": "Сон, вес, траты — без самообмана.", "biz": "Касса, прибыль, остатки — цифры совпадают с фактом.", "swing": "Образ", "swing_axis": "Честность", "bias": "Фасад снаружи при слепых цифрах внутри — ночью паника.", "cross": "Время на замер vs скорость решений; правда цифр vs комфорт самообмана."}, "tyl": {"id": "tyl", "name": "Тыл", "floor": 0, "col": 1, "q": "Есть ли куда вернуться и чем жить полгода, если доход встанет?", "human": "Своё жильё, подушка, быт не в огне.", "biz": "Резерв, договоры, запас на чёрный день.", "swing": "Союз", "swing_axis": "Автономия", "bias": "Растворение в партнёре из страха остаться без опоры — или бункер в одиночку.", "cross": "Деньги в подушку vs в рост; безопасность vs близость."}, "masshtab": {"id": "masshtab", "name": "Масштаб", "floor": 0, "col": 2, "q": "Расту ли я, не разваливая то, на чём стою?", "human": "Доход и свобода растут без надрыва.", "biz": "Выручка и доля рынка без проедания тыла.", "swing": "Среда", "swing_axis": "Принадлежность", "bias": "Одинокий рост без обратной связи — или тусовка без своих результатов.", "cross": "Рост vs запас; личный аппетит vs сила окружения."}, "zapas": {"id": "zapas", "name": "Запас прочности", "floor": 0, "col": 3, "q": "Выдержу ли удар: болезнь, кассовый разрыв, уход ключевого человека?", "human": "Держу удар без паники.", "biz": "План Б, не висим на одном клиенте.", "swing": "Шлюз", "swing_axis": "Защита и открытость", "bias": "Крепость умирает от голода — или проходной двор без охраны.", "cross": "Резерв vs скорость; броня vs новые возможности."}, "znaniya": {"id": "znaniya", "name": "Знания", "floor": 1, "col": 0, "q": "Решаю по фактам или по привычке?", "human": "Учусь тому, что меняет решения.", "biz": "Смотрим рынок и факты, а не «как всегда».", "swing": "Страсть", "swing_axis": "Мотив", "bias": "Вечный анализ без шага — или слепой риск без фактов.", "cross": "Учёба vs действие; холодный анализ vs азарт."}, "poryadok": {"id": "poryadok", "name": "Порядок", "floor": 1, "col": 1, "q": "День идёт по ритму или каждый раз героизм?", "human": "Режим дня, лимит задач.", "biz": "Правила, сроки, чистый процесс без подвигов.", "swing": "Вклад", "swing_axis": "Направленность", "bias": "Бюрократия ради правил — или спасательство ценой себя.", "cross": "Дисциплина vs щедрость; структура vs служение."}, "produkt": {"id": "produkt", "name": "Продукт", "floor": 1, "col": 2, "q": "Есть ли результат, который можно показать и за который платят?", "human": "Работа, за которую платят и которой горжусь.", "biz": "То, что клиент получает и может проверить.", "swing": "Смысл", "swing_axis": "Цель", "bias": "Идеальная вещь никому не нужна — или миссия без прототипа.", "cross": "Мастерство vs миссия; сделано vs красиво сказано."}, "ochistka": {"id": "ochistka", "name": "Очистка", "floor": 1, "col": 3, "q": "Выбрасываю ли я мёртвое: долги, обиды, людей и дела, которые только жрут?", "human": "Закрыл долги, отпустил обиды.", "biz": "Списали мёртвый склад, убрали лишнее.", "swing": "Наблюдатель", "swing_axis": "Коррекция", "bias": "Хаотичные чистки без понимания — или дзен, пока горит дом.", "cross": "Выбросить vs пожалеть; действие vs созерцание."}, "obraz": {"id": "obraz", "name": "Образ", "floor": 2, "col": 0, "q": "Снаружи я такой же, как внутри, или держу фасад?", "human": "Без маски и понтов не по карману.", "biz": "Обещаем только то, что реально делаем.", "swing": "Учёт", "swing_axis": "Честность", "bias": "Дорогой вид при пустых карманах — или невидимость при сильном деле.", "cross": "Репутация vs правда цифр; показ vs содержание."}, "soyuz": {"id": "soyuz", "name": "Союз", "floor": 2, "col": 1, "q": "Есть ли человек рядом на равных, без растворения и без холода?", "human": "Рядом на равных, без слияния.", "biz": "Партнёры с ясными долями и зонами.", "swing": "Тыл", "swing_axis": "Автономия", "bias": "Слияние «мы одно» без границ — или холодная изоляция.", "cross": "Близость vs своя опора; доля партнёра vs контроль."}, "sreda": {"id": "sreda", "name": "Среда", "floor": 2, "col": 2, "q": "Люди вокруг дают силу или высасывают?", "human": "Рядом те, кто усиливает.", "biz": "Клиенты и подрядчики, которым доверяешь.", "swing": "Масштаб", "swing_axis": "Принадлежность", "bias": "Растворение в стае — или тиран без обратной связи.", "cross": "Сеть vs фокус; чужие запросы vs свой рост."}, "shlyuz": {"id": "shlyuz", "name": "Шлюз", "floor": 2, "col": 3, "q": "Умею ли я сказать «нет» и не впустить чужое?", "human": "Умею сказать жёсткое «нет».", "biz": "Фильтр клиентов и чёткие договоры.", "swing": "Запас прочности", "swing_axis": "Защита и открытость", "bias": "Проходной двор — или глухая крепость.", "cross": "Открытость vs защита; новый вход vs целостность."}, "strast": {"id": "strast", "name": "Страсть", "floor": 3, "col": 0, "q": "Хочу ли я ещё что-то по-настоящему, или только тяну?", "human": "Есть огонь и азарт, не только долг.", "biz": "Смелость зайти в новый проект.", "swing": "Знания", "swing_axis": "Мотив", "bias": "Авантюра без фактов — или паралич умного бездействия.", "cross": "Огонь vs расчёт; риск vs подготовка."}, "vklad": {"id": "vklad", "name": "Вклад", "floor": 3, "col": 1, "q": "Отдаю ли я так, что меня благодарят, а не тушу пожар ценой себя?", "human": "Даю пользу, не сгораю.", "biz": "Клиент благодарит, сервис выше обещания.", "swing": "Порядок", "swing_axis": "Направленность", "bias": "Спасательство до выгорания — или сухой процесс без пользы людям.", "cross": "Отдача vs границы; польза другим vs свой ритм."}, "smysl": {"id": "smysl", "name": "Смысл", "floor": 3, "col": 2, "q": "Могу ли я сказать, зачем это всё, не лозунгом?", "human": "Могу сказать, зачем живу так.", "biz": "Зачем компания, кроме денег; горизонт на годы.", "swing": "Продукт", "swing_axis": "Цель", "bias": "Пафос без изделия — или идеальный продукт без «зачем».", "cross": "Миссия vs поставка; слова vs сделанное."}, "nablyudatel": {"id": "nablyudatel", "name": "Наблюдатель", "floor": 3, "col": 3, "q": "Вижу ли я, что произошло, не назначая виноватого?", "human": "Вижу факт, не ищу виноватого.", "biz": "Ошибки разбираем спокойно, без охоты на ведьм.", "swing": "Очистка", "swing_axis": "Коррекция", "bias": "Пассивный дзен при пожаре — или чистки без взгляда сверху.", "cross": "Смотреть vs чинить; принятие vs действие."}}, "nodeBreaks": {"golod": {"id": "golod", "name": "Голод", "human": "Не хватает сна, еды, денег на базовое.", "biz": "Нет оборота, касса пустая, люди на износе.", "kind": "node"}, "yad": {"id": "yad", "name": "Яд", "human": "Внутрь проходит разрушающее: привычки, токсичные люди.", "biz": "Клиенты или сотрудники, которые разлагают команду.", "kind": "node"}, "peregruz": {"id": "peregruz", "name": "Перегрузка", "human": "На себе больше, чем выдерживаешь.", "biz": "Проектов и обещаний больше мощности.", "kind": "node"}, "ballast": {"id": "ballast", "name": "Балласт", "human": "Долги, обиды, дела, которые только жрут.", "biz": "Мёртвый склад, лишние процессы, люди «жалко уволить».", "kind": "node"}, "sleposta": {"id": "sleposta", "name": "Слепота", "human": "Факты не смотрим: «я в норме» при явной поломке.", "biz": "Нет учёта ушедших клиентов, игнор сигналов.", "kind": "node"}, "fasad": {"id": "fasad", "name": "Фасад", "human": "Снаружи одно, внутри другое.", "biz": "Обещаем премиум — делаем брак.", "kind": "node"}, "lozhnaya": {"id": "lozhnaya", "name": "Ложная цель", "human": "Гонимся за цифрой или статусом, которые вредят.", "biz": "Огромная выручка при чистом убытке.", "kind": "node"}, "model": {"id": "model", "name": "Устаревшая модель", "human": "Живём по старой карте, мир уже другой.", "biz": "Решения «как десять лет назад».", "kind": "node"}, "pustota": {"id": "pustota", "name": "Пустота", "human": "Нет жизненно важного куска — навыка, опоры, ритма.", "biz": "Нет юриста, нет проверки качества, нет владельца процесса.", "kind": "node"}, "tochka": {"id": "tochka", "name": "Единая точка отказа", "human": "Всё держится на одном человеке.", "biz": "Почти вся выручка от одного клиента; один незаменимый.", "kind": "node"}, "dyra": {"id": "dyra", "name": "Дыра в границе", "human": "Не умеем сказать «нет» и «это стоит отдельно».", "biz": "На честном слове без бумаг; чужое проходит свободно.", "kind": "node"}, "chuzhaya": {"id": "chuzhaya", "name": "Чужая ноша", "human": "Тащим то, что должны нести другие.", "biz": "Сам делаю чужую работу; плачу чужие долги.", "kind": "node"}}, "linkBreaks": {"razryv": {"id": "razryv", "name": "Разрыв", "human": "Между вами тишина или только формальности.", "biz": "Отделы общаются только служебными записками.", "kind": "link"}, "iskazhenie": {"id": "iskazhenie", "name": "Искажение", "human": "Слышим не сказанное, а свой страх.", "biz": "Вместо факта — домысел о злом умысле.", "kind": "link"}, "mimo": {"id": "mimo", "name": "Мимо адресата", "human": "Злимся не на того, кто в ситуации.", "biz": "Претензия ушла не тому сотруднику.", "kind": "link"}, "yazyki": {"id": "yazyki", "name": "Разные языки", "human": "Одни слова — разный смысл.", "biz": "Один про сроки, другой про деньги — и все «про одно».", "kind": "link"}, "disbalans": {"id": "disbalans", "name": "Дисбаланс обмена", "human": "Один тянет, другой снимает сливки.", "biz": "Неравный вклад при равных долях.", "kind": "link"}, "klinch": {"id": "klinch", "name": "Клинч", "human": "Пока тот не шагнёт — я не шагну.", "biz": "«Пока не извинится — не согласую»: оба теряют.", "kind": "link"}, "raskachka": {"id": "raskachka", "name": "Раскачка", "human": "Упрёк → сарказм → крик → дверь.", "biz": "Конфликт сам себя кормит на планёрках.", "kind": "link"}, "sabotazh": {"id": "sabotazh", "name": "Саботаж", "human": "На словах да, на деле нет.", "biz": "«Конечно сделаем» — и торможение по факту.", "kind": "link"}, "sliyanie": {"id": "sliyanie", "name": "Слияние", "human": "Нет «я» и «ты»; договоры «не нужны».", "biz": "Без границ — потом раздел через суд.", "kind": "link"}, "treugolnik": {"id": "treugolnik", "name": "Треугольник", "human": "Втянули третьего: жалобы за спиной, дети в ссоре.", "biz": "Сплетни партнёру вместо прямого разговора.", "kind": "link"}, "razmytaya": {"id": "razmytaya", "name": "Размытая зона", "human": "«Я думал, ты» — и никто не сделал.", "biz": "Нет одного хозяина задачи.", "kind": "link"}, "tabu": {"id": "tabu", "name": "Табу", "human": "Ради мира не говорим о главном.", "biz": "Скрытые долги; молчание о риске.", "kind": "link"}}, "floors": ["Основа", "Мастерство", "Контакт", "Курс"], "cols": ["Что берём", "Как делаем", "Что отдаём", "Что чиним"], "colWhy": ["вход ресурса", "процесс", "результат наружу", "обратная связь"]};
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll(".deck-slide"));
+  var N = slides.length;
+  var idx = 0;
+  var popup = document.getElementById("popup");
+  var popupBody = document.getElementById("popup-body");
+  var pager = document.getElementById("pager");
+  var D = window.COREX_DATA;
+
+  function fit() {
+    var s = slides[idx] && slides[idx].querySelector(".slide");
+    if (!s) return;
+    var scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    slides.forEach(function (sl) {
+      var el = sl.querySelector(".slide");
+      if (el) el.style.transform = "scale(" + scale + ")";
+    });
+  }
+
+  function show(i) {
+    if (i < 0 || i >= N) return;
+    idx = i;
+    slides.forEach(function (sl, j) {
+      sl.classList.toggle("active", j === idx);
+    });
+    pager.textContent = (idx + 1) + " / " + N;
+    try { history.replaceState(null, "", "#" + (idx + 1)); } catch (e) {}
+    fit();
+  }
+
+  function openPopup(html) {
+    popupBody.innerHTML = html;
+    popup.classList.add("open");
+  }
+  function closePopup() {
+    popup.classList.remove("open");
+    popupBody.innerHTML = "";
+  }
+
+  function sphereHtml(s) {
+    var floor = D.floors[s.floor];
+    var col = D.cols[s.col];
+    var why = D.colWhy[s.col];
+    return (
+      '<h3 id="popup-title">' + s.name + '</h3>' +
+      '<p class="q">' + s.q + '</p>' +
+      '<div class="cx-popup-meta">' +
+        '<div><strong>Вертикаль — этаж</strong>' + floor + '</div>' +
+        '<div><strong>Горизонталь — шаг</strong>' + col + ' <span style="color:#6b7280">(' + why + ')</span></div>' +
+        '<div><strong>Качель</strong>Баланс с «' + s.swing + '» · ось: ' + s.swing_axis + '<br>' + s.bias + '</div>' +
+        '<div><strong>Перекрёсток ресурса</strong>' + s.cross + '</div>' +
+      '</div>' +
+      '<p><strong>Человек:</strong> ' + s.human + '</p>' +
+      '<p><strong>Дело:</strong> ' + s.biz + '</p>'
+    );
+  }
+
+  function breakHtml(b) {
+    var kind = b.kind === "link" ? "Между нами" : "Во мне";
+    return (
+      '<h3 id="popup-title">' + b.name + '</h3>' +
+      '<p class="q">' + kind + ' — универсальный паттерн, не привязан к одной клетке карты</p>' +
+      '<p><strong>У человека:</strong> ' + b.human + '</p>' +
+      '<p><strong>В деле:</strong> ' + b.biz + '</p>'
+    );
+  }
+
+  function elemHtml(e) {
+    return '<h3 id="popup-title">' + e.title + '</h3><p class="q">' + e.life + '</p>';
+  }
+
+  document.addEventListener("click", function (ev) {
+    var t = ev.target.closest("[data-cx]");
+    if (!t) {
+      if (ev.target === popup) closePopup();
+      return;
+    }
+    ev.preventDefault();
+    ev.stopPropagation();
+    var kind = t.getAttribute("data-cx");
+    var id = t.getAttribute("data-id");
+    if (kind === "sphere" && D.spheres[id]) openPopup(sphereHtml(D.spheres[id]));
+    else if (kind === "break") {
+      var b = D.nodeBreaks[id] || D.linkBreaks[id];
+      if (b) openPopup(breakHtml(b));
+    } else if (kind === "elem" && D.elements[id]) openPopup(elemHtml(D.elements[id]));
+  }, true);
+
+  document.getElementById("popup-close").addEventListener("click", function (e) {
+    e.stopPropagation(); closePopup();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (popup.classList.contains("open")) {
+      if (e.key === "Escape") { closePopup(); e.preventDefault(); }
+      return;
+    }
+    var focused = document.activeElement && document.activeElement.closest
+      ? document.activeElement.closest("[data-cx]") : null;
+    if (focused && (e.key === "Enter" || e.key === " ")) {
+      focused.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+      e.preventDefault();
+      return;
+    }
+    if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { show(idx + 1); e.preventDefault(); }
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") { show(idx - 1); e.preventDefault(); }
+    else if (e.key === "Home") { show(0); e.preventDefault(); }
+    else if (e.key === "End") { show(N - 1); e.preventDefault(); }
+  });
+
+  window.addEventListener("resize", fit);
+  var hash = parseInt((location.hash || "").replace("#", ""), 10);
+  show(hash >= 1 && hash <= N ? hash - 1 : 0);
+})();
+</script>
+</body>
+</html>
