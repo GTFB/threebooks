@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<title>ROOT Canvas — бланки сессии</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 11px;
+    line-height: 1.35;
+    color: #111;
+    margin: 0;
+    background: #e8e8e8;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 8px auto;
+    padding: 12mm;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0,0,0,.15);
+    page-break-after: always;
+  }
+  h1 { font-size: 16px; margin: 0 0 4px; }
+  h2 { font-size: 13px; margin: 10px 0 6px; border-bottom: 1px solid #333; padding-bottom: 2px; }
+  .meta { color: #555; margin-bottom: 8px; }
+  .row { display: flex; gap: 8px; margin-bottom: 6px; }
+  .row > * { flex: 1; }
+  label { display: block; font-weight: 600; margin-bottom: 2px; }
+  .field {
+    border: 1px solid #999;
+    min-height: 28px;
+    padding: 4px 6px;
+    border-radius: 2px;
+  }
+  .field.tall { min-height: 56px; }
+  .field.x-tall { min-height: 80px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .box {
+    border: 2px solid #222;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+  .box .title {
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 6px;
+    letter-spacing: .02em;
+  }
+  .timer { float: right; font-weight: 400; color: #444; }
+  .intersect {
+    border: 2px dashed #333;
+    background: #f7f7f7;
+    padding: 8px;
+    margin: 8px 0;
+    text-align: center;
+  }
+  .checklist label { font-weight: 400; margin: 3px 0; }
+  .footer { margin-top: 10px; font-size: 10px; color: #666; }
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; margin: 0; width: auto; min-height: auto; }
+    .no-print { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<p class="no-print" style="text-align:center;padding:12px;font-size:13px">
+  Печать: Ctrl+P → «Сохранить как PDF» / принтер · 3 листа А4 · поля по умолчанию
+</p>
+
+<!-- ========== PAGE 1: COREX ========== -->
+<section class="page">
+  <h1>COREX Canvas</h1>
+  <p class="meta">ROOT v15 · сессия 60 мин · дата ________ · кто ________</p>
+
+  <div class="grid3">
+    <div><label>Пульс старт</label><div class="field"></div></div>
+    <div><label>Этаж L1–L5</label><div class="field"></div></div>
+    <div><label>Код поломки</label><div class="field"></div></div>
+  </div>
+
+  <div class="box">
+    <div class="title">0 · СТОП <span class="timer">0–3 мин</span></div>
+    <div class="grid3">
+      <div><label>Холод / вздохи</label><div class="field">☐ сделано</div></div>
+      <div><label>Пульс после</label><div class="field">&lt; 80?</div></div>
+      <div><label>Допуск</label><div class="field">☐ да</div></div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="title">C · CLARIFY <span class="timer">3–15 мин</span></div>
+    <label>Факт «как на камере»</label>
+    <div class="field tall"></div>
+    <div class="grid3" style="margin-top:6px">
+      <div><label>Kr_cash</label><div class="field"></div></div>
+      <div><label>Kr_time</label><div class="field"></div></div>
+      <div><label>Kr_bio / T_rec</label><div class="field"></div></div>
+    </div>
+    <div class="grid2" style="margin-top:6px">
+      <div><label>Дефицит валюты</label><div class="field">VIT / PSY / LIQ / POW / ATT</div></div>
+      <div><label>Граница жива?</label><div class="field">☐ да ☐ нет</div></div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="title">O · OWN <span class="timer">15–25 мин</span></div>
+    <label>Моя доля (не вина партнёра/рынка)</label>
+    <div class="field tall"></div>
+    <div class="grid2" style="margin-top:6px">
+      <div><label>ЧСС: −10% от старта?</label><div class="field">☐ / 4–7–8 × 2 мин ☐</div></div>
+      <div><label>Челюсть / дыхание</label><div class="field">☐ ок</div></div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="title">R · RELIVE <span class="timer">25–45 мин</span></div>
+    <label>«ДА» факту (текст)</label>
+    <div class="field tall"></div>
+    <div class="grid2" style="margin-top:6px">
+      <div><label>Экспозиция 3–5 мин (спазм)</label><div class="field">где: _____ · вдох ☐</div></div>
+      <div><label>Эмоция названа</label><div class="field"></div></div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="title">E · ENGINEER <span class="timer">45–55 мин</span></div>
+    <div class="grid2">
+      <div><label>ИКР (как выглядит победа)</label><div class="field tall"></div></div>
+      <div>
+        <label>Рычаг</label>
+        <div class="field">☐ острый L1 → прямой &nbsp; ☐ хронический → N+8</div>
+        <label style="margin-top:6px">Сфера / действие</label>
+        <div class="field tall"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="title">X · eXECUTE <span class="timer">55–60 мин</span></div>
+    <label>Микрокоммит за 1 час (физически)</label>
+    <div class="field tall"></div>
+    <div class="grid3" style="margin-top:6px">
+      <div><label>Контроль 30 сут</label><div class="field"></div></div>
+      <div><label>60 сут</label><div class="field"></div></div>
+      <div><label>90 сут</label><div class="field"></div></div>
+    </div>
+  </div>
+  <p class="footer">Field Runbook: root_field_runbook.md · Справочник: технология_v15.md</p>
+</section>
+
+<!-- ========== PAGE 2: DYAD ========== -->
+<section class="page">
+  <h1>Диадический Canvas — «Час на двоих»</h1>
+  <p class="meta">ROOT v15 · §6.7 · дата ________ · А ________ · Б ________</p>
+  <p class="meta"><strong>Стоп:</strong> ПРЛ / мания / абьюз → не этот бланк. Клиника.</p>
+
+  <div class="grid2">
+    <div class="box">
+      <div class="title">Контур А</div>
+      <label>Пульс до</label><div class="field"></div>
+      <label style="margin-top:6px">Факт (камера, без обвинений)</label><div class="field x-tall"></div>
+      <label style="margin-top:6px">Моя доля</label><div class="field tall"></div>
+      <label style="margin-top:6px">Потребность / просьба</label><div class="field tall"></div>
+      <label style="margin-top:6px">Пульс после тайм-аута</label><div class="field">&lt; 80?</div>
+    </div>
+    <div class="box">
+      <div class="title">Контур Б</div>
+      <label>Пульс до</label><div class="field"></div>
+      <label style="margin-top:6px">Факт (камера, без обвинений)</label><div class="field x-tall"></div>
+      <label style="margin-top:6px">Моя доля</label><div class="field tall"></div>
+      <label style="margin-top:6px">Потребность / просьба</label><div class="field tall"></div>
+      <label style="margin-top:6px">Пульс после тайм-аута</label><div class="field">&lt; 80?</div>
+    </div>
+  </div>
+
+  <div class="intersect">
+    <strong>Зона пересечения</strong> — общее решение / контракт на 7 дней
+    <div class="field tall" style="margin-top:6px;text-align:left"></div>
+  </div>
+
+  <h2>Канал</h2>
+  <div class="grid3">
+    <div><label>Код поломки связи</label><div class="field"></div></div>
+    <div><label>Треугольник? кто С</label><div class="field"></div></div>
+    <div><label>Шаг +5% (кто первый)</label><div class="field"></div></div>
+  </div>
+  <div class="grid2" style="margin-top:6px">
+    <div><label>T_rec до базы &lt;80 (А / Б)</label><div class="field">___ / ___ мин</div></div>
+    <div><label>Тон без презрения?</label><div class="field">☐ да ☐ нет → тайм-аут 20 мин</div></div>
+  </div>
+
+  <h2>Итог часа</h2>
+  <div class="field tall"></div>
+  <div class="row" style="margin-top:8px">
+    <div><label>Следующая встреча</label><div class="field"></div></div>
+    <div><label>Канал: жив / Airgap / апоптоз</label><div class="field"></div></div>
+  </div>
+  <p class="footer">Не применять при клинических дисклеймерах триажа · технология_v15.md §6–7</p>
+</section>
+
+<!-- ========== PAGE 3: SUNSET ========== -->
+<section class="page">
+  <h1>Sunset Canvas — апоптоз / демонтаж</h1>
+  <p class="meta">ROOT v15 · §8 · дата ________ · система ________</p>
+
+  <h2>Критерий неремонтируемости (хотя бы один)</h2>
+  <div class="checklist">
+    <label>☐ Kr_cash или Kr_time &lt; 0,2 × три цикла τ</label>
+    <label>☐ L1 разрушен, ресурса на восстановление нет</label>
+    <label>☐ Нет доброй воли / Airgap против паразита</label>
+    <label>☐ Оператор скомпрометирован + фазовый коллапс, нет зеркала</label>
+  </div>
+  <label style="margin-top:6px">Доказательства</label>
+  <div class="field tall"></div>
+
+  <h2>1. Консервация опыта</h2>
+  <label>3 тезиса post-mortem</label>
+  <div class="field x-tall">1.<br/>2.<br/>3.</div>
+
+  <h2>2. Обязательства</h2>
+  <div class="grid2">
+    <div class="checklist">
+      <label>☐ Runway на закрытие посчитан</label>
+      <label>☐ Кредиторы / приоритет письменно</label>
+      <label>☐ Письмо инвесторам / партнёрам</label>
+      <label>☐ Счета / доступы закрыты или переданы</label>
+    </div>
+    <div class="checklist">
+      <label>☐ Трудовые / клиенты (с юристом)</label>
+      <label>☐ IP / код / домены — акт</label>
+      <label>☐ Корп. процедуры по юрисдикции</label>
+      <label>☐ NDA взаимный, без мести</label>
+    </div>
+  </div>
+
+  <h2>3. Отключение каналов</h2>
+  <div class="field tall">Чаты / ключи / совместные счета — что закрыто:</div>
+
+  <h2>4. Сброс энтропии</h2>
+  <div class="grid2">
+    <div><label>Ритуал закрытия</label><div class="field tall"></div></div>
+    <div><label>Телесный сброс</label><div class="field tall"></div></div>
+  </div>
+  <div class="grid2" style="margin-top:6px">
+    <div><label>Свидетель (не оппонент)</label><div class="field"></div></div>
+    <div><label>Контроль через τ Контакта</label><div class="field">дата ____</div></div>
+  </div>
+
+  <h2>Формула</h2>
+  <div class="field tall">«Система закрыта. Ядро L1 _____. Опыт экспортирован.»</div>
+
+  <p class="footer">Юридический блок — ориентир, не консультация. Перед ликвидацией — адвокат вашей юрисдикции.</p>
+</section>
+
+</body>
+</html>
